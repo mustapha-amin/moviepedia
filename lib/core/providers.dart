@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pixlstream/core/paths.dart';
 
@@ -11,7 +12,7 @@ final dioProvider = Provider(
         baseUrl: Paths.baseUrl,
         connectTimeout: const Duration(milliseconds: 5000),
         queryParameters: {
-          'api_key': '1dfbe81151a008c60f7af078a5272f5e',
+          'api_key': dotenv.env['API_KEY'],
           'language': 'en-US',
         },
       ),
