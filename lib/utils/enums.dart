@@ -3,3 +3,10 @@ enum MovieType{
   upcoming,
   topRated,
 }
+
+enum MovieStatus {
+  initial,
+  loading,
+  success,
+  failure,
+}

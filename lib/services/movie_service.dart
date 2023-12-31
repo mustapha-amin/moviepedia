@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pixlstream/core/paths.dart';
@@ -14,7 +17,7 @@ class MovieService {
 
   MovieService({this.dio});
 
-  Future<List<Movie>?> fetchMovie(MovieType movieType, WidgetRef ref) async {
+  Future<List<Movie?>> fetchMovie(MovieType movieType, WidgetRef ref) async {
     Response response = await dio!.get(
       switch (movieType) {
         MovieType.upcoming => Paths.upcomingMovies,
@@ -29,8 +32,9 @@ class MovieService {
         },
       },
     );
-    Map<String, dynamic> data = response.data;
-    List<dynamic> movies = data['results'];
-    return movies.map((movie) => Movie.fromJson(movie)).toList();
+
+    List<dynamic> movies = response.data['results'];
+    log(movies.length.toString());
+    return movies.map((e) => Movie.fromJson(e)).toList();
   }
 }

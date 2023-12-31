@@ -24,7 +24,7 @@ final dioProvider = Provider(
           return handler.next(options);
         },
         onResponse: (response, handler) {
-          log("<-- ${response.statusCode} ${response.requestOptions.path}");
+          log("<-- ${response.statusCode} ${response.data}");
           return handler.next(response);
         },
         onError: (DioException e, handler) {
