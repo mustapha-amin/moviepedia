@@ -1,4 +1,4 @@
-import 'package:pixlstream/utils/enums.dart';
+import 'package:moviepedia/utils/enums.dart';
 
 import '../models/movie.dart';
 

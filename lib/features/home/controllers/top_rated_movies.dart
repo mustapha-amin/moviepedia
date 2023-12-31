@@ -1,13 +1,14 @@
 import 'dart:developer';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pixlstream/models/movie.dart';
-import 'package:pixlstream/services/movie_service.dart';
-import 'package:pixlstream/utils/enums.dart';
+import 'package:moviepedia/models/movie.dart';
+import 'package:moviepedia/services/movie_service.dart';
+import 'package:moviepedia/utils/enums.dart';
 
 import '../../../core/typedefs.dart';
 
-final topRatedMoviesProvider = StateNotifierProvider<TopRatedMoviesNotifier, MovieState>((ref) {
+final topRatedMoviesProvider =
+    StateNotifierProvider<TopRatedMoviesNotifier, MovieState>((ref) {
   return TopRatedMoviesNotifier(
     movieService: ref.watch(movieServiceProvider),
   );
@@ -20,7 +21,7 @@ class TopRatedMoviesNotifier extends StateNotifier<MovieState> {
     this.movieService,
   }) : super(([], MovieStatus.initial));
 
-   Future<void> loadMovies(WidgetRef ref) async {
+  Future<void> loadMovies(WidgetRef ref) async {
     state = (state.$1, MovieStatus.loading);
     try {
       List<Movie?> newMovies = await movieService!.fetchMovie(

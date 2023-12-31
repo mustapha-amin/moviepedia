@@ -1,13 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pixlstream/core/paths.dart';
-import 'package:pixlstream/features/home/controllers/popular_movies.dart';
-import 'package:pixlstream/features/home/views/view_all.dart.dart';
-import 'package:pixlstream/features/home/widgets/movie_preview.dart';
-import 'package:pixlstream/utils/extensions.dart';
-import 'package:pixlstream/utils/kTextStyle.dart';
-import 'package:pixlstream/utils/navigation.dart';
+import 'package:moviepedia/core/paths.dart';
+import 'package:moviepedia/features/home/controllers/popular_movies.dart';
+import 'package:moviepedia/features/home/views/view_all.dart.dart';
+import 'package:moviepedia/features/home/widgets/movie_preview.dart';
+import 'package:moviepedia/utils/extensions.dart';
+import 'package:moviepedia/utils/kTextStyle.dart';
+import 'package:moviepedia/utils/navigation.dart';
 
 import '../../../utils/enums.dart';
 import '../controllers/top_rated_movies.dart';

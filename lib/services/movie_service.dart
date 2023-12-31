@@ -3,10 +3,10 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pixlstream/core/paths.dart';
-import 'package:pixlstream/core/providers.dart';
-import 'package:pixlstream/models/movie.dart';
-import 'package:pixlstream/utils/enums.dart';
+import 'package:moviepedia/core/paths.dart';
+import 'package:moviepedia/core/providers.dart';
+import 'package:moviepedia/models/movie.dart';
+import 'package:moviepedia/utils/enums.dart';
 
 final movieServiceProvider = Provider((ref) {
   return MovieService(dio: ref.watch(dioProvider));

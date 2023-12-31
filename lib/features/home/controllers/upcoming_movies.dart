@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pixlstream/models/movie.dart';
-import 'package:pixlstream/services/movie_service.dart';
-import 'package:pixlstream/utils/enums.dart';
+import 'package:moviepedia/models/movie.dart';
+import 'package:moviepedia/services/movie_service.dart';
+import 'package:moviepedia/utils/enums.dart';
 
 import '../../../core/typedefs.dart';
 

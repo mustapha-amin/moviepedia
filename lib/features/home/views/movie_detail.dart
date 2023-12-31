@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:pixlstream/core/paths.dart';
-import 'package:pixlstream/models/movie.dart';
-import 'package:pixlstream/utils/extensions.dart';
-import 'package:pixlstream/utils/kTextStyle.dart';
+import 'package:moviepedia/core/paths.dart';
+import 'package:moviepedia/models/movie.dart';
+import 'package:moviepedia/utils/extensions.dart';
+import 'package:moviepedia/utils/kTextStyle.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:pixlstream/utils/shimmer_image.dart';
+import 'package:moviepedia/utils/shimmer_image.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:shimmer/shimmer.dart';
 
