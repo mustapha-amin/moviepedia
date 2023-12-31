@@ -1,4 +1,4 @@
-# pixlstream
+# moviepedia
 
 A new Flutter project.
 

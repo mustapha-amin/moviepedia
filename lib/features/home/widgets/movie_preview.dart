@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:pixlstream/features/home/views/movie_detail.dart';
-import 'package:pixlstream/models/movie.dart';
-import 'package:pixlstream/utils/extensions.dart';
-import 'package:pixlstream/utils/kTextStyle.dart';
-import 'package:pixlstream/utils/navigation.dart';
+import 'package:moviepedia/features/home/views/movie_detail.dart';
+import 'package:moviepedia/models/movie.dart';
+import 'package:moviepedia/utils/extensions.dart';
+import 'package:moviepedia/utils/kTextStyle.dart';
+import 'package:moviepedia/utils/navigation.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../../core/paths.dart';
 import '../../../utils/shimmer_image.dart';

@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pixlstream/features/home/views/home.dart';
-import 'package:pixlstream/utils/kTextStyle.dart';
+import 'package:moviepedia/features/home/views/home.dart';
+import 'package:moviepedia/utils/kTextStyle.dart';
 
 final btmNavbarIndexProvider = StateProvider((ref) {
   return 0;
 });
 
-class PixlBtmNavBar extends ConsumerStatefulWidget {
-  const PixlBtmNavBar({super.key});
+class AppBtmNavBar extends ConsumerStatefulWidget {
+  const AppBtmNavBar({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _PixlBtmNavBarState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _AppBtmNavBarState();
 }
 
-class _PixlBtmNavBarState extends ConsumerState<PixlBtmNavBar> {
+class _AppBtmNavBarState extends ConsumerState<AppBtmNavBar> {
   final List<Widget> screens = const [
     Home(),
   ];

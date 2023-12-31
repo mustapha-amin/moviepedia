@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "pixlstream" "\0"
+            VALUE "FileDescription", "moviepedia" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "pixlstream" "\0"
+            VALUE "InternalName", "moviepedia" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2023 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "pixlstream.exe" "\0"
-            VALUE "ProductName", "pixlstream" "\0"
+            VALUE "OriginalFilename", "moviepedia.exe" "\0"
+            VALUE "ProductName", "moviepedia" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

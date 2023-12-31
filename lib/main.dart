@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData.dark(),
-        home: const PixlBtmNavBar(),
+        home: const AppBtmNavBar(),
       ),
     );
   }

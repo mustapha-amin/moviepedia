@@ -1,6 +1,6 @@
 {
-    "name": "pixlstream",
-    "short_name": "pixlstream",
+    "name": "moviepedia",
+    "short_name": "moviepedia",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
