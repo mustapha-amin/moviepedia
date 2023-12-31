@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:moviepedia/core/providers.dart';
 import 'package:moviepedia/models/movie.dart';
 import 'package:moviepedia/services/movie_service.dart';
 import 'package:moviepedia/utils/enums.dart';
@@ -21,15 +22,20 @@ class UpcomingMoviesNotifier extends StateNotifier<MovieState> {
   }) : super(([], MovieStatus.initial));
 
   void loadMovies(WidgetRef ref) async {
+    final int prevState = ref.watch(upcomingPageProvider);
+    ref.read(upcomingPageProvider.notifier).state++;
     state = (state.$1, MovieStatus.loading);
-    try {
-      List<Movie?> newMovies = await movieService!.fetchMovie(
-        MovieType.upcoming,
-        ref,
-      );
-      state = ([...state.$1, ...newMovies], MovieStatus.success);
-    } catch (e) {
-      state = ([], MovieStatus.failure);
+    var newMovies = await movieService!.fetchMovie(
+      MovieType.upcoming,
+      ref,
+    );
+    if (newMovies.error == null) {
+      state = ([...state.$1, ...newMovies.result!], MovieStatus.success);
+      error = newMovies.error;
+    } else {
+      state = (state.$1, MovieStatus.failure);
+      error = newMovies.error;
+      ref.read(upcomingPageProvider.notifier).state = prevState;
     }
   }
 }

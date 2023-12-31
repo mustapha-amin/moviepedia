@@ -50,7 +50,7 @@ class MoviePreview extends StatelessWidget {
                   movie.title.length < 40
                       ? movie.title
                       : '${movie.title.substring(0, 41)} ...',
-                  style: kTextStyle(13),
+                  style: kTextStyle(15),
                   softWrap: true,
                 ),
               ],

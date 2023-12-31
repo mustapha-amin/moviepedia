@@ -10,7 +10,7 @@ final dioProvider = Provider(
     final dio = Dio(
       BaseOptions(
         baseUrl: Paths.baseUrl,
-        connectTimeout: const Duration(milliseconds: 5000),
+        connectTimeout: const Duration(seconds: 10),
         queryParameters: {
           'api_key': dotenv.env['API_KEY'],
           'language': 'en-US',

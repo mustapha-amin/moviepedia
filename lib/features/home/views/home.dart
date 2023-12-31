@@ -1,7 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:moviepedia/core/paths.dart';
 import 'package:moviepedia/features/home/controllers/popular_movies.dart';
 import 'package:moviepedia/features/home/views/view_all.dart.dart';
 import 'package:moviepedia/features/home/widgets/movie_preview.dart';
@@ -69,7 +67,7 @@ class _HomeState extends ConsumerState<Home> {
           ([], MovieStatus.loading) =>
             const Center(child: CircularProgressIndicator()),
           ([], MovieStatus.failure) =>
-            const Center(child: Text("An error occured")),
+            Center(child: Text(ref.watch(popularMoviesProvider.notifier).error!)),
           _ => SizedBox(
               height: context.screenHeight * .48,
               child: ListView(
@@ -112,7 +110,7 @@ class _HomeState extends ConsumerState<Home> {
           ([], MovieStatus.loading) =>
             const Center(child: CircularProgressIndicator()),
           ([], MovieStatus.failure) =>
-            const Center(child: Text("An error occured")),
+            Center(child: Text(ref.watch(upcomingMoviesProvider.notifier).error!)),
           _ => SizedBox(
               height: context.screenHeight * .48,
               child: ListView(
@@ -155,7 +153,7 @@ class _HomeState extends ConsumerState<Home> {
           ([], MovieStatus.loading) =>
             const Center(child: CircularProgressIndicator()),
           ([], MovieStatus.failure) =>
-            const Center(child: Text("An error occured")),
+            Center(child: Text(ref.watch(topRatedMoviesProvider.notifier).error!)),
           _ => SizedBox(
               height: context.screenHeight * .48,
               child: ListView(
