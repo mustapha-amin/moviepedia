@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pixlstream/features/home/controllers/popular_movies.dart';
-import 'package:pixlstream/features/home/controllers/top_rated_movies.dart';
-import 'package:pixlstream/features/home/controllers/upcoming_movies.dart';
 import 'package:pixlstream/features/home/views/home.dart';
+import 'package:pixlstream/utils/kTextStyle.dart';
 
 final btmNavbarIndexProvider = StateProvider((ref) {
   return 0;
@@ -24,7 +22,17 @@ class _PixlBtmNavBarState extends ConsumerState<PixlBtmNavBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        elevation: 0,
+        title: Text(
+          "MoviePedia",
+          style: kTextStyle(
+            30,
+            color: Colors.amber,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
       body: IndexedStack(
         index: ref.watch(btmNavbarIndexProvider),
         children: screens,

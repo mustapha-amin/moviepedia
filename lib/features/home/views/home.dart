@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pixlstream/core/paths.dart';
 import 'package:pixlstream/features/home/controllers/popular_movies.dart';
+import 'package:pixlstream/features/home/views/view_all.dart.dart';
 import 'package:pixlstream/features/home/widgets/movie_preview.dart';
 import 'package:pixlstream/utils/extensions.dart';
 import 'package:pixlstream/utils/kTextStyle.dart';
+import 'package:pixlstream/utils/navigation.dart';
 
 import '../../../utils/enums.dart';
 import '../controllers/top_rated_movies.dart';
@@ -36,6 +38,9 @@ class _HomeState extends ConsumerState<Home> {
     final topRatedMovies = ref.watch(topRatedMoviesProvider);
     return ListView(
       children: [
+        const SizedBox(
+          height: 30,
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -44,7 +49,14 @@ class _HomeState extends ConsumerState<Home> {
               style: kTextStyle(30),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                navigateTo(
+                  context,
+                  AllMovies(
+                    movieType: MovieType.popular,
+                  ),
+                );
+              },
               child: Text(
                 "View all",
                 style: kTextStyle(16, color: Colors.amber),
@@ -59,7 +71,7 @@ class _HomeState extends ConsumerState<Home> {
           ([], MovieStatus.failure) =>
             const Center(child: Text("An error occured")),
           _ => SizedBox(
-              height: context.screenHeight * .45,
+              height: context.screenHeight * .48,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
@@ -80,7 +92,14 @@ class _HomeState extends ConsumerState<Home> {
               style: kTextStyle(30),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                navigateTo(
+                  context,
+                  AllMovies(
+                    movieType: MovieType.upcoming,
+                  ),
+                );
+              },
               child: Text(
                 "View all",
                 style: kTextStyle(16, color: Colors.amber),
@@ -95,7 +114,7 @@ class _HomeState extends ConsumerState<Home> {
           ([], MovieStatus.failure) =>
             const Center(child: Text("An error occured")),
           _ => SizedBox(
-              height: context.screenHeight * .45,
+              height: context.screenHeight * .48,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
@@ -116,7 +135,14 @@ class _HomeState extends ConsumerState<Home> {
               style: kTextStyle(30),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                navigateTo(
+                  context,
+                  AllMovies(
+                    movieType: MovieType.topRated,
+                  ),
+                );
+              },
               child: Text(
                 "View all",
                 style: kTextStyle(16, color: Colors.amber),
@@ -131,7 +157,7 @@ class _HomeState extends ConsumerState<Home> {
           ([], MovieStatus.failure) =>
             const Center(child: Text("An error occured")),
           _ => SizedBox(
-              height: context.screenHeight * .45,
+              height: context.screenHeight * .48,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
@@ -145,6 +171,6 @@ class _HomeState extends ConsumerState<Home> {
             ),
         }
       ],
-    ).padX(10);
+    ).padX(14);
   }
 }

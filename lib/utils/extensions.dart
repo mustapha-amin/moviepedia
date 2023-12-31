@@ -6,7 +6,6 @@ extension BuildContextExtensions on BuildContext {
 }
 
 extension WidgetExtensions on Widget {
-  
   Widget padX(double? size) => Padding(
         padding: EdgeInsets.symmetric(horizontal: size!),
         child: this,
@@ -23,3 +22,20 @@ extension WidgetExtensions on Widget {
       );
 }
 
+extension JoinTimeFormatting on DateTime {
+  String get formatJoinTime {
+    final months = [
+      '', // Leave the first element empty for index alignment
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+
+    return '${months[month]}, $year';
+  }
+}
+
+extension TitleString on String {
+  String get title {
+    return this[0].toUpperCase() + substring(1, length);
+  }
+}
