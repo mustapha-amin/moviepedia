@@ -31,9 +31,9 @@ class _HomeState extends ConsumerState<Home> {
 
   @override
   Widget build(BuildContext context) {
-    final popularMovies = ref.watch(popularMoviesProvider);
-    final upcomingMovies = ref.watch(upcomingMoviesProvider);
-    final topRatedMovies = ref.watch(topRatedMoviesProvider);
+    var popularMovies = ref.watch(popularMoviesProvider);
+    var upcomingMovies = ref.watch(upcomingMoviesProvider);
+    var topRatedMovies = ref.watch(topRatedMoviesProvider);
     return ListView(
       children: [
         const SizedBox(
@@ -50,7 +50,7 @@ class _HomeState extends ConsumerState<Home> {
               onPressed: () {
                 navigateTo(
                   context,
-                  AllMovies(
+                  const AllMovies(
                     movieType: MovieType.popular,
                   ),
                 );
@@ -66,8 +66,8 @@ class _HomeState extends ConsumerState<Home> {
           ([], MovieStatus.initial) => const SizedBox(),
           ([], MovieStatus.loading) =>
             const Center(child: CircularProgressIndicator()),
-          ([], MovieStatus.failure) =>
-            Center(child: Text(ref.watch(popularMoviesProvider.notifier).error!)),
+          ([], MovieStatus.failure) => Center(
+              child: Text(ref.watch(popularMoviesProvider.notifier).error!)),
           _ => SizedBox(
               height: context.screenHeight * .48,
               child: ListView(
@@ -93,7 +93,7 @@ class _HomeState extends ConsumerState<Home> {
               onPressed: () {
                 navigateTo(
                   context,
-                  AllMovies(
+                  const AllMovies(
                     movieType: MovieType.upcoming,
                   ),
                 );
@@ -109,8 +109,8 @@ class _HomeState extends ConsumerState<Home> {
           ([], MovieStatus.initial) => const SizedBox(),
           ([], MovieStatus.loading) =>
             const Center(child: CircularProgressIndicator()),
-          ([], MovieStatus.failure) =>
-            Center(child: Text(ref.watch(upcomingMoviesProvider.notifier).error!)),
+          ([], MovieStatus.failure) => Center(
+              child: Text(ref.watch(upcomingMoviesProvider.notifier).error!)),
           _ => SizedBox(
               height: context.screenHeight * .48,
               child: ListView(
@@ -136,7 +136,7 @@ class _HomeState extends ConsumerState<Home> {
               onPressed: () {
                 navigateTo(
                   context,
-                  AllMovies(
+                  const AllMovies(
                     movieType: MovieType.topRated,
                   ),
                 );
@@ -152,8 +152,8 @@ class _HomeState extends ConsumerState<Home> {
           ([], MovieStatus.initial) => const SizedBox(),
           ([], MovieStatus.loading) =>
             const Center(child: CircularProgressIndicator()),
-          ([], MovieStatus.failure) =>
-            Center(child: Text(ref.watch(topRatedMoviesProvider.notifier).error!)),
+          ([], MovieStatus.failure) => Center(
+              child: Text(ref.watch(topRatedMoviesProvider.notifier).error!)),
           _ => SizedBox(
               height: context.screenHeight * .48,
               child: ListView(

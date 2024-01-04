@@ -44,4 +44,21 @@ class MovieService {
       return (result: null, error: e.message);
     }
   }
+
+  Future<({List<Movie?>? result, String? error})> searchMovie(
+      String? query) async {
+    try {
+      Response response = await dio!.get(Paths.searchUrl, queryParameters: {
+        'query': query,
+      });
+      List<dynamic> movies = response.data['results'];
+      log(movies.length.toString());
+      return (
+        result: movies.map((e) => Movie.fromJson(e)).toList(),
+        error: null
+      );
+    } on DioException catch (e) {
+      return (result: null, error: e.message!);
+    }
+  }
 }

@@ -76,7 +76,7 @@ class _MovieDetailState extends State<MovieDetail> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    icon: const Icon(Icons.arrow_back_ios_outlined),
+                    icon: const Icon(Icons.arrow_back),
                   ),
                 ),
               ],

@@ -13,8 +13,8 @@ import 'package:moviepedia/utils/kTextStyle.dart';
 import 'package:moviepedia/utils/navigation.dart';
 
 class AllMovies extends ConsumerStatefulWidget {
-  MovieType? movieType;
-  AllMovies({this.movieType, super.key});
+  final MovieType? movieType;
+  const AllMovies({Key? key, this.movieType}) : super(key: key);
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _AllMoviesState();
@@ -22,7 +22,6 @@ class AllMovies extends ConsumerStatefulWidget {
 
 class _AllMoviesState extends ConsumerState<AllMovies> {
   final ScrollController scrollController = ScrollController();
-  bool isEnd = false;
 
   Future<void> loadMoreMovies(WidgetRef ref) async {
     if (widget.movieType == MovieType.popular) {
@@ -32,30 +31,21 @@ class _AllMoviesState extends ConsumerState<AllMovies> {
     } else {
       ref.read(upcomingMoviesProvider.notifier).loadMovies(ref);
     }
-    scrollController.position.animateTo(
-      scrollController.offset + 100,
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.bounceIn,
-    );
   }
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      scrollController.addListener(() {
-        if (scrollController.offset ==
-            scrollController.position.maxScrollExtent) {
-          setState(() {
-            isEnd = true;
-          });
-          loadMoreMovies(ref);
-        } else {
-          setState(() {
-            isEnd = false;
-          });
-        }
-      });
+    scrollController.addListener(() {
+      if (scrollController.offset ==
+          scrollController.position.maxScrollExtent) {
+        loadMoreMovies(ref);
+        // scrollController.animateTo(
+        //   scrollController.offset + 200,
+        //   duration: const Duration(milliseconds: 500),
+        //   curve: Curves.easeInOut,
+        // );
+      }
     });
   }
 
@@ -66,6 +56,7 @@ class _AllMoviesState extends ConsumerState<AllMovies> {
       MovieType.popular => ref.watch(popularMoviesProvider),
       _ => ref.watch(topRatedMoviesProvider)
     };
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -74,43 +65,35 @@ class _AllMoviesState extends ConsumerState<AllMovies> {
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: !isEnd ? context.screenHeight : context.screenHeight * .8,
-              child: GridView(
-                controller: scrollController,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 1 / 2,
-                ),
-                children: [
-                  ...movies.$1.map(
-                    (movie) => SizedBox(
-                      width: context.screenWidth * .45,
-                      child: InkWell(
-                        onTap: () {
-                          navigateTo(context, MovieDetail(movie: movie));
-                        },
-                        child: GridMoviePreview(movie: movie!),
-                      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            child: GridView(
+              controller: scrollController,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 1 / 2,
+              ),
+              children: [
+                ...movies.$1.map(
+                  (movie) => SizedBox(
+                    width: context.screenWidth * 0.45,
+                    child: InkWell(
+                      onTap: () {
+                        navigateTo(context, MovieDetail(movie: movie));
+                      },
+                      child: GridMoviePreview(movie: movie!),
                     ),
                   ),
-                ],
-              ),
-            ),
-            isEnd && movies.$2 == MovieStatus.loading
-                ? const Center(
-                    child: SizedBox(
-                      height: 30,
-                      width: 30,
-                      child: CircularProgressIndicator(),
-                    ),
-                  ).padAll(5)
-                : const SizedBox()
-          ],
-        ),
+                )
+              ],
+            ).padX(5),
+          ),
+          if (movies.$2 == MovieStatus.loading)
+            const CircularProgressIndicator(),
+        ],
       ),
     );
   }

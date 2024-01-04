@@ -30,11 +30,11 @@ class UpcomingMoviesNotifier extends StateNotifier<MovieState> {
       ref,
     );
     if (newMovies.error == null) {
+      error = newMovies.error;
       state = ([...state.$1, ...newMovies.result!], MovieStatus.success);
-      error = newMovies.error;
     } else {
-      state = (state.$1, MovieStatus.failure);
       error = newMovies.error;
+      state = (state.$1, MovieStatus.failure);
       ref.read(upcomingPageProvider.notifier).state = prevState;
     }
   }
