@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:moviepedia/core/providers.dart';
 import 'package:moviepedia/features/home/controllers/popular_movies.dart';
 import 'package:moviepedia/features/home/controllers/top_rated_movies.dart';
 import 'package:moviepedia/features/home/controllers/upcoming_movies.dart';
 import 'package:moviepedia/features/home/views/movie_detail.dart';
 import 'package:moviepedia/features/home/widgets/grid_movie_preview.dart';
-import 'package:moviepedia/models/movie.dart';
 import 'package:moviepedia/utils/enums.dart';
 import 'package:moviepedia/utils/extensions.dart';
 import 'package:moviepedia/utils/kTextStyle.dart';
@@ -40,18 +38,13 @@ class _AllMoviesState extends ConsumerState<AllMovies> {
       if (scrollController.offset ==
           scrollController.position.maxScrollExtent) {
         loadMoreMovies(ref);
-        // scrollController.animateTo(
-        //   scrollController.offset + 200,
-        //   duration: const Duration(milliseconds: 500),
-        //   curve: Curves.easeInOut,
-        // );
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    var movies = switch (widget.movieType) {
+    var moviesProvider = switch (widget.movieType) {
       MovieType.upcoming => ref.watch(upcomingMoviesProvider),
       MovieType.popular => ref.watch(popularMoviesProvider),
       _ => ref.watch(topRatedMoviesProvider)
@@ -77,21 +70,21 @@ class _AllMoviesState extends ConsumerState<AllMovies> {
                 childAspectRatio: 1 / 2,
               ),
               children: [
-                ...movies.$1.map(
-                  (movie) => SizedBox(
+                ...moviesProvider.$1.map(
+                  (movieResponse) => SizedBox(
                     width: context.screenWidth * 0.45,
                     child: InkWell(
                       onTap: () {
-                        navigateTo(context, MovieDetail(movie: movie));
+                        navigateTo(context, MovieDetail(movieResponse: movieResponse));
                       },
-                      child: GridMoviePreview(movie: movie!),
+                      child: GridMoviePreview(movie: movieResponse.movie!),
                     ),
                   ),
                 )
               ],
             ).padX(5),
           ),
-          if (movies.$2 == MovieStatus.loading)
+          if (moviesProvider.$2 == Status.loading)
             const CircularProgressIndicator(),
         ],
       ),

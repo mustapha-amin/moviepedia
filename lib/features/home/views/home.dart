@@ -63,10 +63,10 @@ class _HomeState extends ConsumerState<Home> {
           ],
         ),
         switch (popularMovies) {
-          ([], MovieStatus.initial) => const SizedBox(),
-          ([], MovieStatus.loading) =>
+          ([], Status.initial) => const SizedBox(),
+          ([], Status.loading) =>
             const Center(child: CircularProgressIndicator()),
-          ([], MovieStatus.failure) => Center(
+          ([], Status.failure) => Center(
               child: Text(ref.watch(popularMoviesProvider.notifier).error!)),
           _ => SizedBox(
               height: context.screenHeight * .48,
@@ -74,8 +74,8 @@ class _HomeState extends ConsumerState<Home> {
                 scrollDirection: Axis.horizontal,
                 children: [
                   ...popularMovies.$1.map(
-                    (movie) => popularMovies.$1.indexOf(movie) < 11
-                        ? MoviePreview(movie: movie!)
+                    (pmovie) => popularMovies.$1.indexOf(pmovie) < 11
+                        ? MoviePreview(movieResponse: pmovie)
                         : const SizedBox(),
                   ),
                 ],
@@ -106,10 +106,10 @@ class _HomeState extends ConsumerState<Home> {
           ],
         ),
         switch (upcomingMovies) {
-          ([], MovieStatus.initial) => const SizedBox(),
-          ([], MovieStatus.loading) =>
+          ([], Status.initial) => const SizedBox(),
+          ([], Status.loading) =>
             const Center(child: CircularProgressIndicator()),
-          ([], MovieStatus.failure) => Center(
+          ([], Status.failure) => Center(
               child: Text(ref.watch(upcomingMoviesProvider.notifier).error!)),
           _ => SizedBox(
               height: context.screenHeight * .48,
@@ -117,8 +117,8 @@ class _HomeState extends ConsumerState<Home> {
                 scrollDirection: Axis.horizontal,
                 children: [
                   ...upcomingMovies.$1.map(
-                    (movie) => popularMovies.$1.indexOf(movie) < 11
-                        ? MoviePreview(movie: movie!)
+                    (umovie) => popularMovies.$1.indexOf(umovie) < 11
+                        ? MoviePreview(movieResponse: umovie)
                         : const SizedBox(),
                   ),
                 ],
@@ -149,10 +149,10 @@ class _HomeState extends ConsumerState<Home> {
           ],
         ),
         switch (topRatedMovies) {
-          ([], MovieStatus.initial) => const SizedBox(),
-          ([], MovieStatus.loading) =>
+          ([], Status.initial) => const SizedBox(),
+          ([], Status.loading) =>
             const Center(child: CircularProgressIndicator()),
-          ([], MovieStatus.failure) => Center(
+          ([], Status.failure) => Center(
               child: Text(ref.watch(topRatedMoviesProvider.notifier).error!)),
           _ => SizedBox(
               height: context.screenHeight * .48,
@@ -160,8 +160,8 @@ class _HomeState extends ConsumerState<Home> {
                 scrollDirection: Axis.horizontal,
                 children: [
                   ...topRatedMovies.$1.map(
-                    (movie) => topRatedMovies.$1.indexOf(movie) < 11
-                        ? MoviePreview(movie: movie!)
+                    (tmovie) => topRatedMovies.$1.indexOf(tmovie) < 11
+                        ? MoviePreview(movieResponse: tmovie)
                         : const SizedBox(),
                   ),
                 ],

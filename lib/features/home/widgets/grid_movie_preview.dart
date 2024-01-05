@@ -1,13 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:moviepedia/core/paths.dart';
-import 'package:moviepedia/models/movie.dart';
 import 'package:moviepedia/utils/extensions.dart';
 import 'package:moviepedia/utils/kTextStyle.dart';
+
+import '../../../models/movie_response.dart';
 
 class GridMoviePreview extends StatelessWidget {
   final Movie movie;
   const GridMoviePreview({
+    super.key,
     required this.movie,
   });
 

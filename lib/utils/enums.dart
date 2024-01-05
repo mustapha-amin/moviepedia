@@ -4,7 +4,7 @@ enum MovieType{
   topRated,
 }
 
-enum MovieStatus {
+enum Status {
   initial,
   loading,
   success,

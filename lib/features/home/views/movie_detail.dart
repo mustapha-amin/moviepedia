@@ -1,22 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:moviepedia/core/paths.dart';
-import 'package:moviepedia/models/movie.dart';
+import 'package:moviepedia/models/movie_response.dart';
 import 'package:moviepedia/utils/extensions.dart';
 import 'package:moviepedia/utils/kTextStyle.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:moviepedia/utils/shimmer_image.dart';
-import 'package:skeletonizer/skeletonizer.dart';
-import 'package:shimmer/shimmer.dart';
 
 class MovieDetail extends StatefulWidget {
-  final Movie movie;
-  const MovieDetail({required this.movie, super.key});
+  MovieResponse? movieResponse;
+  MovieDetail({this.movieResponse, super.key});
 
   @override
   State<MovieDetail> createState() => _MovieDetailState();
 }
 
 class _MovieDetailState extends State<MovieDetail> {
+  late Movie movie;
+  late List<Cast> casts;
+
+  @override
+  void initState() {
+    super.initState();
+    movie = widget.movieResponse!.movie!;
+    casts = widget.movieResponse!.cast!;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +38,7 @@ class _MovieDetailState extends State<MovieDetail> {
                   borderRadius: BorderRadius.circular(10),
                   child: CachedNetworkImage(
                     imageUrl: Paths.imagePathGen(
-                      widget.movie.backdropPath,
+                      movie.backdropPath,
                     ),
                     fit: BoxFit.cover,
                     color: Colors.black.withOpacity(0.2),
@@ -48,11 +56,11 @@ class _MovieDetailState extends State<MovieDetail> {
                 Positioned(
                   bottom: 20,
                   child: Hero(
-                    tag: widget.movie,
+                    tag: movie,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
                       child: CachedNetworkImage(
-                        imageUrl: Paths.imagePathGen(widget.movie.backdropPath),
+                        imageUrl: Paths.imagePathGen(movie.backdropPath),
                         fit: BoxFit.cover,
                         width: context.screenWidth * .5,
                         height: context.screenHeight * .4,
@@ -87,7 +95,7 @@ class _MovieDetailState extends State<MovieDetail> {
                 Wrap(
                   children: [
                     Text(
-                      widget.movie.originalTitle,
+                      movie.originalTitle,
                       style: kTextStyle(18, fontWeight: FontWeight.bold),
                     ),
                   ],
@@ -102,11 +110,11 @@ class _MovieDetailState extends State<MovieDetail> {
                           color: Colors.yellow,
                         ),
                         Text(
-                          widget.movie.voteAverage.toStringAsFixed(1),
+                          movie.voteAverage.toStringAsFixed(1),
                           style: kTextStyle(20),
                         ),
                         Text(
-                          " (${widget.movie.voteCount} votes)",
+                          " (${movie.voteCount} votes)",
                           style: kTextStyle(18),
                         ),
                       ],
@@ -130,14 +138,16 @@ class _MovieDetailState extends State<MovieDetail> {
                   height: 5,
                 ),
                 Text(
-                  'Release date: ${widget.movie.releaseDate.formatJoinTime}',
+                  'Release date: $movie.releaseDate.formatJoinTime}',
                   style: kTextStyle(18, color: Colors.amber),
                 ),
                 const SizedBox(
                   height: 10,
                 ),
+                
+
                 Text(
-                  widget.movie.overview,
+                  movie.overview,
                   style: kTextStyle(16),
                 ),
               ],

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moviepedia/features/home/views/movie_detail.dart';
-import 'package:moviepedia/models/movie.dart';
+import 'package:moviepedia/models/movie_response.dart';
 import 'package:moviepedia/utils/extensions.dart';
 import 'package:moviepedia/utils/kTextStyle.dart';
 import 'package:moviepedia/utils/navigation.dart';
@@ -9,17 +9,17 @@ import '../../../core/paths.dart';
 import '../../../utils/shimmer_image.dart';
 
 class MoviePreview extends StatelessWidget {
-  final Movie movie;
-  const MoviePreview({required this.movie, super.key});
+  final MovieResponse movieResponse;
+  const MoviePreview({required this.movieResponse, super.key});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        navigateTo(context, MovieDetail(movie: movie));
+        navigateTo(context, MovieDetail(movieResponse: movieResponse));
       },
       child: Hero(
-        tag: movie,
+        tag: movieResponse.movie!,
         child: Card(
           child: SizedBox(
             width: context.screenWidth * .35,
@@ -34,7 +34,7 @@ class MoviePreview extends StatelessWidget {
                       fadeInDuration: const Duration(milliseconds: 100),
                       fadeOutDuration: const Duration(milliseconds: 100),
                       fit: BoxFit.cover,
-                      imageUrl: Paths.imagePathGen(movie.posterPath),
+                      imageUrl: Paths.imagePathGen(movieResponse.movie!.posterPath),
                       height: context.screenHeight * .35,
                       width: context.screenWidth * .38,
                       placeholder: (context, _) {
@@ -47,9 +47,9 @@ class MoviePreview extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  movie.title.length < 40
-                      ? movie.title
-                      : '${movie.title.substring(0, 41)} ...',
+                  movieResponse.movie!.title.length < 40
+                      ? movieResponse.movie!.title
+                      : '${movieResponse.movie!.title.substring(0, 41)} ...',
                   style: kTextStyle(15),
                   softWrap: true,
                 ),

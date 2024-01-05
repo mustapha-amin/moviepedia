@@ -1,5 +1,4 @@
+import 'package:moviepedia/models/movie_response.dart';
 import 'package:moviepedia/utils/enums.dart';
 
-import '../models/movie.dart';
-
-typedef MovieState = (List<Movie?> movies, MovieStatus movieStatus);
+typedef ResponseState<T> = (List<T> movies, Status status);
