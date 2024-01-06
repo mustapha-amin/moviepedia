@@ -75,7 +75,8 @@ class _HomeState extends ConsumerState<Home> {
                 children: [
                   ...popularMovies.$1.map(
                     (pmovie) => popularMovies.$1.indexOf(pmovie) < 11
-                        ? MoviePreview(movieResponse: pmovie)
+                        ? MoviePreview(
+                            movieResponse: pmovie, movieType: MovieType.popular)
                         : const SizedBox(),
                   ),
                 ],
@@ -118,7 +119,9 @@ class _HomeState extends ConsumerState<Home> {
                 children: [
                   ...upcomingMovies.$1.map(
                     (umovie) => popularMovies.$1.indexOf(umovie) < 11
-                        ? MoviePreview(movieResponse: umovie)
+                        ? MoviePreview(
+                            movieResponse: umovie,
+                            movieType: MovieType.upcoming)
                         : const SizedBox(),
                   ),
                 ],
@@ -161,7 +164,9 @@ class _HomeState extends ConsumerState<Home> {
                 children: [
                   ...topRatedMovies.$1.map(
                     (tmovie) => topRatedMovies.$1.indexOf(tmovie) < 11
-                        ? MoviePreview(movieResponse: tmovie)
+                        ? MoviePreview(
+                            movieResponse: tmovie,
+                            movieType: MovieType.topRated)
                         : const SizedBox(),
                   ),
                 ],

@@ -49,9 +49,13 @@ class MovieService {
 
   Future<({List<Cast>? cast, String? error})> fetchCast(int? id) async {
     try {
+      log(id.toString());
       Response response = await dio!.get('/$id/credits');
       List<dynamic> results = response.data['cast'];
-      return (cast: results.map((e) => Cast.fromJson(e)).toList(), error: null);
+      return (
+        cast: results.map((e) => Cast.fromJson(e)).toList(),
+        error: null,
+      );
     } on DioException catch (e) {
       return (cast: null, error: e.message);
     }

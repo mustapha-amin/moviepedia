@@ -1,5 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:moviepedia/core/paths.dart';
+import 'package:moviepedia/features/home/controllers/popular_movies.dart';
+import 'package:moviepedia/features/home/controllers/top_rated_movies.dart';
+import 'package:moviepedia/features/home/controllers/upcoming_movies.dart';
 import 'package:moviepedia/features/movie_details/controller/cast_contoller.dart';
 import 'package:moviepedia/features/movie_details/widgets/cast_widget.dart';
 import 'package:moviepedia/models/movie_response.dart';
@@ -12,7 +17,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class MovieDetail extends ConsumerStatefulWidget {
   MovieResponse? movieResponse;
-  MovieDetail({this.movieResponse, super.key});
+  MovieType? movieType;
+  MovieDetail({this.movieResponse, this.movieType, super.key});
 
   @override
   ConsumerState<MovieDetail> createState() => _MovieDetailState();
@@ -27,6 +33,21 @@ class _MovieDetailState extends ConsumerState<MovieDetail> {
     super.initState();
     movie = widget.movieResponse!.movie!;
     casts = widget.movieResponse!.cast!;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final movieProvider = ref.watch(switch (widget.movieType) {
+        MovieType.popular => popularMoviesProvider,
+        MovieType.topRated => topRatedMoviesProvider,
+        _ => upcomingMoviesProvider
+      });
+      movieProvider.$1
+              .firstWhere((element) => element.movie!.id == movie.id)
+              .cast!
+              .isEmpty
+          ? ref.read(castProvider.notifier).updateCast(
+              widget.movieResponse!.movie!.id, ref, widget.movieType!)
+          : null;
+    });
   }
 
   @override
@@ -47,11 +68,11 @@ class _MovieDetailState extends ConsumerState<MovieDetail> {
                     fit: BoxFit.cover,
                     color: Colors.black.withOpacity(0.2),
                     colorBlendMode: BlendMode.dstATop,
-                    height: context.screenHeight * .6,
+                    height: context.screenHeight * .5,
                     width: context.screenWidth,
                     placeholder: (context, _) {
                       return ShimmerImage(
-                        height: context.screenHeight * .6,
+                        height: context.screenHeight * .5,
                         width: context.screenWidth,
                       );
                     },
@@ -79,7 +100,7 @@ class _MovieDetailState extends ConsumerState<MovieDetail> {
                   ),
                 ),
                 Positioned(
-                  top: 40,
+                  top: 30,
                   left: 15,
                   child: IconButton.filledTonal(
                     style: IconButton.styleFrom(
@@ -100,7 +121,7 @@ class _MovieDetailState extends ConsumerState<MovieDetail> {
                   children: [
                     Text(
                       movie.originalTitle,
-                      style: kTextStyle(18, fontWeight: FontWeight.bold),
+                      style: kTextStyle(25, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -138,6 +159,10 @@ class _MovieDetailState extends ConsumerState<MovieDetail> {
                     )
                   ],
                 ),
+                Text(
+                  'Release date: ${movie.releaseDate.formatJoinTime}',
+                  style: kTextStyle(18, color: Colors.amber),
+                ),
                 const SizedBox(
                   height: 5,
                 ),
@@ -148,25 +173,36 @@ class _MovieDetailState extends ConsumerState<MovieDetail> {
                       Status.loading =>
                         const Center(child: CircularProgressIndicator()),
                       _ => SizedBox(
-                          height: context.screenHeight * .1,
-                          child: ListView(
-                            scrollDirection: Axis.horizontal,
+                          height: context.screenHeight * .3,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              ...castController.$1.map(
-                                (cast) => CastPreview(cast: cast),
-                              )
+                              Text(
+                                " Cast",
+                                style: kTextStyle(
+                                  40,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Expanded(
+                                child: ListView(
+                                  scrollDirection: Axis.horizontal,
+                                  children: [
+                                    ...castController.$1.map(
+                                      (cast) => Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 10),
+                                        child: CastPreview(cast: cast),
+                                      ),
+                                    )
+                                  ],
+                                ).padX(2),
+                              ),
                             ],
                           ),
                         )
                     };
                   },
-                ),
-                Text(
-                  'Release date: $movie.releaseDate.formatJoinTime}',
-                  style: kTextStyle(18, color: Colors.amber),
-                ),
-                const SizedBox(
-                  height: 10,
                 ),
                 Text(
                   movie.overview,

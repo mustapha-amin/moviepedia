@@ -7,16 +7,18 @@ import 'package:moviepedia/utils/navigation.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../../core/paths.dart';
 import '../../../utils/shimmer_image.dart';
+import '/utils/enums.dart';
 
 class MoviePreview extends StatelessWidget {
   final MovieResponse movieResponse;
-  const MoviePreview({required this.movieResponse, super.key});
+  final MovieType movieType;
+  const MoviePreview({required this.movieResponse, required this.movieType, super.key});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        navigateTo(context, MovieDetail(movieResponse: movieResponse));
+        navigateTo(context, MovieDetail(movieResponse: movieResponse, movieType: movieType));
       },
       child: Hero(
         tag: movieResponse.movie!,
@@ -34,7 +36,8 @@ class MoviePreview extends StatelessWidget {
                       fadeInDuration: const Duration(milliseconds: 100),
                       fadeOutDuration: const Duration(milliseconds: 100),
                       fit: BoxFit.cover,
-                      imageUrl: Paths.imagePathGen(movieResponse.movie!.posterPath),
+                      imageUrl:
+                          Paths.imagePathGen(movieResponse.movie!.posterPath),
                       height: context.screenHeight * .35,
                       width: context.screenWidth * .38,
                       placeholder: (context, _) {
