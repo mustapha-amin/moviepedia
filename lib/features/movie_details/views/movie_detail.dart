@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:moviepedia/core/paths.dart';
-import 'package:moviepedia/features/home/controllers/cast_contoller.dart';
-import 'package:moviepedia/features/home/widgets/cast_widget.dart';
+import 'package:moviepedia/features/movie_details/controller/cast_contoller.dart';
+import 'package:moviepedia/features/movie_details/widgets/cast_widget.dart';
 import 'package:moviepedia/models/movie_response.dart';
 import 'package:moviepedia/utils/enums.dart';
 import 'package:moviepedia/utils/extensions.dart';

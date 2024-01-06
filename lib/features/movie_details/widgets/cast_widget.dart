@@ -1,8 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:moviepedia/features/home/views/cast_details.dart';
 import 'package:moviepedia/models/movie_response.dart';
 import 'package:moviepedia/utils/extensions.dart';
 import 'package:moviepedia/utils/kTextStyle.dart';
+import 'package:moviepedia/utils/navigation.dart';
 import 'package:moviepedia/utils/shimmer_image.dart';
 
 class CastPreview extends StatelessWidget {
@@ -14,19 +17,28 @@ class CastPreview extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ClipRRect(
+        InkWell(
           borderRadius: BorderRadius.circular(10),
-          child: CachedNetworkImage(
-            imageUrl: cast.name,
-            height: context.screenWidth * .28,
-            width: context.screenWidth * .28,
-            fit: BoxFit.cover,
-            placeholder: (context, url) {
-              return ShimmerImage(
-                height: context.screenWidth * .28,
-                width: context.screenWidth * .28,
-              );
-            },
+          onTap: () => navigateTo(
+            context,
+            CastDetails(
+              cast: cast,
+            ),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: CachedNetworkImage(
+              imageUrl: cast.name,
+              height: context.screenWidth * .28,
+              width: context.screenWidth * .28,
+              fit: BoxFit.cover,
+              placeholder: (context, url) {
+                return ShimmerImage(
+                  height: context.screenWidth * .28,
+                  width: context.screenWidth * .28,
+                );
+              },
+            ),
           ),
         ),
         Text(

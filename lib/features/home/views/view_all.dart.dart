@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:moviepedia/features/home/controllers/popular_movies.dart';
 import 'package:moviepedia/features/home/controllers/top_rated_movies.dart';
 import 'package:moviepedia/features/home/controllers/upcoming_movies.dart';
-import 'package:moviepedia/features/home/views/movie_detail.dart';
+import 'package:moviepedia/features/movie_details/views/movie_detail.dart';
 import 'package:moviepedia/features/home/widgets/grid_movie_preview.dart';
 import 'package:moviepedia/utils/enums.dart';
 import 'package:moviepedia/utils/extensions.dart';

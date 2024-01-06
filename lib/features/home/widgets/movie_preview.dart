@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:moviepedia/features/home/views/movie_detail.dart';
+import 'package:moviepedia/features/movie_details/views/movie_detail.dart';
 import 'package:moviepedia/models/movie_response.dart';
 import 'package:moviepedia/utils/extensions.dart';
 import 'package:moviepedia/utils/kTextStyle.dart';
