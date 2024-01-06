@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:moviepedia/core/paths.dart';
+import 'package:moviepedia/features/home/controllers/cast_contoller.dart';
+import 'package:moviepedia/features/home/widgets/cast_widget.dart';
 import 'package:moviepedia/models/movie_response.dart';
+import 'package:moviepedia/utils/enums.dart';
 import 'package:moviepedia/utils/extensions.dart';
 import 'package:moviepedia/utils/kTextStyle.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:moviepedia/utils/shimmer_image.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class MovieDetail extends StatefulWidget {
+class MovieDetail extends ConsumerStatefulWidget {
   MovieResponse? movieResponse;
   MovieDetail({this.movieResponse, super.key});
 
   @override
-  State<MovieDetail> createState() => _MovieDetailState();
+  ConsumerState<MovieDetail> createState() => _MovieDetailState();
 }
 
-class _MovieDetailState extends State<MovieDetail> {
+class _MovieDetailState extends ConsumerState<MovieDetail> {
   late Movie movie;
   late List<Cast> casts;
 
@@ -137,6 +141,26 @@ class _MovieDetailState extends State<MovieDetail> {
                 const SizedBox(
                   height: 5,
                 ),
+                Consumer(
+                  builder: (context, ref, _) {
+                    final castController = ref.watch(castProvider);
+                    return switch (castController.$2) {
+                      Status.loading =>
+                        const Center(child: CircularProgressIndicator()),
+                      _ => SizedBox(
+                          height: context.screenHeight * .1,
+                          child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: [
+                              ...castController.$1.map(
+                                (cast) => CastPreview(cast: cast),
+                              )
+                            ],
+                          ),
+                        )
+                    };
+                  },
+                ),
                 Text(
                   'Release date: $movie.releaseDate.formatJoinTime}',
                   style: kTextStyle(18, color: Colors.amber),
@@ -144,8 +168,6 @@ class _MovieDetailState extends State<MovieDetail> {
                 const SizedBox(
                   height: 10,
                 ),
-                
-
                 Text(
                   movie.overview,
                   style: kTextStyle(16),

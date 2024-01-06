@@ -7,7 +7,7 @@ import 'package:moviepedia/models/movie_response.dart';
 import 'package:moviepedia/services/movie_service.dart';
 import 'package:moviepedia/utils/enums.dart';
 
-final castProvider = StateNotifierProvider((ref) {
+final castProvider = StateNotifierProvider<CastNotifier, ResponseState<Cast>>((ref) {
   return CastNotifier(
     movieService: ref.watch(movieServiceProvider),
   );
