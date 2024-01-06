@@ -7,13 +7,15 @@ import 'package:moviepedia/utils/enums.dart';
 import '../../../core/typedefs.dart';
 
 final upcomingMoviesProvider =
-    StateNotifierProvider<UpcomingMoviesNotifier, ResponseState<MovieResponse>>((ref) {
+    StateNotifierProvider<UpcomingMoviesNotifier, ResponseState<MovieResponse>>(
+        (ref) {
   return UpcomingMoviesNotifier(
     movieService: ref.watch(movieServiceProvider),
   );
 });
 
-class UpcomingMoviesNotifier extends StateNotifier<ResponseState<MovieResponse>> {
+class UpcomingMoviesNotifier
+    extends StateNotifier<ResponseState<MovieResponse>> {
   MovieService? movieService;
 
   UpcomingMoviesNotifier({
@@ -24,7 +26,7 @@ class UpcomingMoviesNotifier extends StateNotifier<ResponseState<MovieResponse>>
     final int prevState = ref.watch(upcomingPageProvider);
     ref.read(upcomingPageProvider.notifier).state++;
     state = (state.$1, Status.loading, null);
-    var newMovies = await movieService!.fetchMovie(
+    var newMovies = await movieService!.fetchMovies(
       MovieType.upcoming,
       ref,
     );

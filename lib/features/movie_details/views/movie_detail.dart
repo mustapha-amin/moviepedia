@@ -126,6 +126,20 @@ class _MovieDetailState extends ConsumerState<MovieDetail> {
                     ),
                   ],
                 ),
+                Text(
+                  "Genre: ${AppConstants.generateGenre(movie.genreIds)}",
+                  style: kTextStyle(16, color: Colors.amber),
+                ),
+                const SizedBox(
+                  height: 2,
+                ),
+                Text(
+                  'Release date: ${movie.releaseDate.formatJoinTime}',
+                  style: kTextStyle(16, color: Colors.amber),
+                ),
+                const SizedBox(
+                  height: 2,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -160,20 +174,6 @@ class _MovieDetailState extends ConsumerState<MovieDetail> {
                     )
                   ],
                 ),
-                Text(
-                  'Release date: ${movie.releaseDate.formatJoinTime}',
-                  style: kTextStyle(18, color: Colors.amber),
-                ),
-                const SizedBox(
-                  height: 2,
-                ),
-                Text(
-                  "Genre: ${AppConstants.generateGenre(movie.genreIds)}",
-                  style: kTextStyle(18, color: Colors.amber),
-                ),
-                const SizedBox(
-                  height: 2,
-                ),
                 Consumer(
                   builder: (context, ref, _) {
                     final castController = ref.watch(castProvider);
@@ -188,13 +188,14 @@ class _MovieDetailState extends ConsumerState<MovieDetail> {
                               Text(
                                 " Cast",
                                 style: kTextStyle(
-                                  40,
+                                  35,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                               Expanded(
                                 child: ListView(
                                   scrollDirection: Axis.horizontal,
+                                  physics: const BouncingScrollPhysics(),
                                   children: [
                                     ...castController.$1.map(
                                       (cast) => Padding(

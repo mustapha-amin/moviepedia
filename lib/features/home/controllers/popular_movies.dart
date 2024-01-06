@@ -26,7 +26,7 @@ class PopularMoviesNotifier
     final int prevState = ref.watch(popularPageProvider);
     ref.read(popularPageProvider.notifier).state++;
     state = (state.$1, Status.loading, null);
-    var newMovies = await movieService!.fetchMovie(
+    var newMovies = await movieService!.fetchMovies(
       MovieType.popular,
       ref,
     );

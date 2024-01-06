@@ -9,13 +9,15 @@ import '../../../core/typedefs.dart';
 import '../../../models/movie_response.dart';
 
 final topRatedMoviesProvider =
-    StateNotifierProvider<TopRatedMoviesNotifier, ResponseState<MovieResponse>>((ref) {
+    StateNotifierProvider<TopRatedMoviesNotifier, ResponseState<MovieResponse>>(
+        (ref) {
   return TopRatedMoviesNotifier(
     movieService: ref.watch(movieServiceProvider),
   );
 });
 
-class TopRatedMoviesNotifier extends StateNotifier<ResponseState<MovieResponse>> {
+class TopRatedMoviesNotifier
+    extends StateNotifier<ResponseState<MovieResponse>> {
   MovieService? movieService;
 
   TopRatedMoviesNotifier({
@@ -26,7 +28,7 @@ class TopRatedMoviesNotifier extends StateNotifier<ResponseState<MovieResponse>>
     final int prevState = ref.watch(topratedPageProvider);
     state = (state.$1, Status.loading, null);
     ref.read(topratedPageProvider.notifier).state++;
-    var newMovies = await movieService!.fetchMovie(
+    var newMovies = await movieService!.fetchMovies(
       MovieType.topRated,
       ref,
     );
