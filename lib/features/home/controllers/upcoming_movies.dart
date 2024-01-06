@@ -15,32 +15,30 @@ final upcomingMoviesProvider =
 
 class UpcomingMoviesNotifier extends StateNotifier<ResponseState<MovieResponse>> {
   MovieService? movieService;
-  String? error;
 
   UpcomingMoviesNotifier({
     this.movieService,
-  }) : super(([], Status.initial));
+  }) : super(([], Status.initial, null));
 
   void loadMovies(WidgetRef ref) async {
     final int prevState = ref.watch(upcomingPageProvider);
     ref.read(upcomingPageProvider.notifier).state++;
-    state = (state.$1, Status.loading);
+    state = (state.$1, Status.loading, null);
     var newMovies = await movieService!.fetchMovie(
       MovieType.upcoming,
       ref,
     );
     if (newMovies.error == null) {
-      error = newMovies.error;
       state = (
         [
           ...state.$1,
           ...newMovies.movie!.map((e) => MovieResponse(movie: e, cast: []))
         ],
-        Status.success
+        Status.success,
+        null,
       );
     } else {
-      error = newMovies.error;
-      state = (state.$1, Status.failure);
+      state = (state.$1, Status.failure, newMovies.error);
       ref.read(upcomingPageProvider.notifier).state = prevState;
     }
   }
@@ -52,6 +50,6 @@ class UpcomingMoviesNotifier extends StateNotifier<ResponseState<MovieResponse>>
     int index = movieResponseList.indexOf(movieResponse);
     movieResponse = movieResponse.updateCastList(cast);
     movieResponseList[index] = movieResponse;
-    state = (movieResponseList, Status.success);
+    state = (movieResponseList, Status.success, null);
   }
 }

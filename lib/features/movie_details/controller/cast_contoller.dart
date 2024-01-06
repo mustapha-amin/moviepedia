@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:moviepedia/core/typedefs.dart';
 import 'package:moviepedia/features/home/controllers/popular_movies.dart';
@@ -18,14 +16,14 @@ final castProvider =
 
 class CastNotifier extends StateNotifier<ResponseState<Cast>> {
   MovieService? movieService;
-  CastNotifier({this.movieService}) : super(([], Status.initial));
+  CastNotifier({this.movieService}) : super(([], Status.initial, null));
 
   void updateCast(int? id, WidgetRef ref, MovieType movieType) async {
     try {
-      state = ([], Status.loading);
+      state = ([], Status.loading, null);
 
       var castResponse = await movieService!.fetchCast(id);
-      state = (castResponse.cast!, Status.success);
+      state = (castResponse.cast!, Status.success, null);
       switch (movieType) {
         case MovieType.popular:
           ref.read(popularMoviesProvider.notifier).updateCast(id, state.$1);
@@ -36,7 +34,7 @@ class CastNotifier extends StateNotifier<ResponseState<Cast>> {
           break;
       }
     } catch (e) {
-      state = ([], Status.failure);
+      state = ([], Status.failure, e.toString());
     }
   }
 }

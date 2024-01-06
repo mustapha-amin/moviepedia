@@ -63,11 +63,11 @@ class _HomeState extends ConsumerState<Home> {
           ],
         ),
         switch (popularMovies) {
-          ([], Status.initial) => const SizedBox(),
-          ([], Status.loading) =>
+          ([], Status.initial, _) => const SizedBox(),
+          ([], Status.loading, _) =>
             const Center(child: CircularProgressIndicator()),
-          ([], Status.failure) => Center(
-              child: Text(ref.watch(popularMoviesProvider.notifier).error!)),
+          ([], Status.failure, _) =>
+            Center(child: Text(ref.watch(popularMoviesProvider).$3!)),
           _ => SizedBox(
               height: context.screenHeight * .48,
               child: ListView(
@@ -107,11 +107,11 @@ class _HomeState extends ConsumerState<Home> {
           ],
         ),
         switch (upcomingMovies) {
-          ([], Status.initial) => const SizedBox(),
-          ([], Status.loading) =>
+          ([], Status.initial, _) => const SizedBox(),
+          ([], Status.loading, _) =>
             const Center(child: CircularProgressIndicator()),
-          ([], Status.failure) => Center(
-              child: Text(ref.watch(upcomingMoviesProvider.notifier).error!)),
+          ([], Status.failure, _) =>
+            Center(child: Text(ref.watch(upcomingMoviesProvider).$3!)),
           _ => SizedBox(
               height: context.screenHeight * .48,
               child: ListView(
@@ -152,11 +152,11 @@ class _HomeState extends ConsumerState<Home> {
           ],
         ),
         switch (topRatedMovies) {
-          ([], Status.initial) => const SizedBox(),
-          ([], Status.loading) =>
+          ([], Status.initial, _) => const SizedBox(),
+          ([], Status.loading, _) =>
             const Center(child: CircularProgressIndicator()),
-          ([], Status.failure) => Center(
-              child: Text(ref.watch(topRatedMoviesProvider.notifier).error!)),
+          ([], Status.failure, _) =>
+            Center(child: Text(ref.watch(topRatedMoviesProvider).$3!)),
           _ => SizedBox(
               height: context.screenHeight * .48,
               child: ListView(

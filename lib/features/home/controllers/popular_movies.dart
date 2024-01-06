@@ -17,32 +17,30 @@ final popularMoviesProvider =
 class PopularMoviesNotifier
     extends StateNotifier<ResponseState<MovieResponse>> {
   MovieService? movieService;
-  String? error;
 
   PopularMoviesNotifier({
     this.movieService,
-  }) : super(([], Status.initial));
+  }) : super(([], Status.initial, null));
 
   Future<void> loadMovies(WidgetRef ref) async {
     final int prevState = ref.watch(popularPageProvider);
     ref.read(popularPageProvider.notifier).state++;
-    state = (state.$1, Status.loading);
+    state = (state.$1, Status.loading, null);
     var newMovies = await movieService!.fetchMovie(
       MovieType.popular,
       ref,
     );
     if (newMovies.error == null) {
-      error = newMovies.error;
       state = (
         [
           ...state.$1,
-          ...newMovies.movie!.map((e) => MovieResponse(movie: e, cast: []))
+          ...newMovies.movie!.map((e) => MovieResponse(movie: e, cast: [])),
         ],
-        Status.success
+        Status.success,
+        null,
       );
     } else {
-      error = newMovies.error;
-      state = (state.$1, Status.failure);
+      state = (state.$1, Status.failure, newMovies.error);
       ref.read(popularPageProvider.notifier).state = prevState;
     }
   }
@@ -54,6 +52,6 @@ class PopularMoviesNotifier
     int index = movieResponseList.indexOf(movieResponse);
     movieResponse = movieResponse.updateCastList(cast);
     movieResponseList[index] = movieResponse;
-    state = (movieResponseList, Status.success);
+    state = (movieResponseList, Status.success, null);
   }
 }
