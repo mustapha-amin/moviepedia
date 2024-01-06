@@ -1,7 +1,7 @@
 import '../models/genre.dart';
 
 class AppConstants {
-  static List<Genre> genreList = [
+  static final List<Genre> _genreList = [
     Genre(id: 28, name: 'Action'),
     Genre(id: 12, name: 'Adventure'),
     Genre(id: 16, name: 'Animation'),
@@ -22,4 +22,9 @@ class AppConstants {
     Genre(id: 10752, name: 'War'),
     Genre(id: 37, name: 'Western')
   ];
+
+  static String generateGenre(List<int> ids) {
+    return ids
+        .map((id) => _genreList.firstWhere((genre) => genre.id == id).name).join(' - ');
+  }
 }

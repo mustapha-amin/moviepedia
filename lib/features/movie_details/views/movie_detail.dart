@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:moviepedia/core/contants.dart';
 import 'package:moviepedia/core/paths.dart';
 import 'package:moviepedia/features/home/controllers/popular_movies.dart';
 import 'package:moviepedia/features/home/controllers/top_rated_movies.dart';
@@ -164,7 +165,14 @@ class _MovieDetailState extends ConsumerState<MovieDetail> {
                   style: kTextStyle(18, color: Colors.amber),
                 ),
                 const SizedBox(
-                  height: 5,
+                  height: 2,
+                ),
+                Text(
+                  "Genre: ${AppConstants.generateGenre(movie.genreIds)}",
+                  style: kTextStyle(18, color: Colors.amber),
+                ),
+                const SizedBox(
+                  height: 2,
                 ),
                 Consumer(
                   builder: (context, ref, _) {
