@@ -17,7 +17,9 @@ class MovieService {
   MovieService({this.dio});
 
   Future<({List<Movie>? movie, String? error})> fetchMovies(
-      MovieType movieType, WidgetRef ref) async {
+    MovieType movieType,
+    WidgetRef ref,
+  ) async {
     String path = switch (movieType) {
       MovieType.upcoming => Paths.upcomingMovies,
       MovieType.topRated => Paths.topRatedMovies,

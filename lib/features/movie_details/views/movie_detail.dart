@@ -121,20 +121,20 @@ class _MovieDetailState extends ConsumerState<MovieDetail> {
                 Wrap(
                   children: [
                     Text(
-                      movie.originalTitle,
+                      movie.originalTitle!,
                       style: kTextStyle(25, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
                 Text(
-                  "Genre: ${AppConstants.generateGenre(movie.genreIds)}",
+                  "Genre: ${AppConstants.generateGenre(movie.genreIds!)}",
                   style: kTextStyle(16, color: Colors.amber),
                 ),
                 const SizedBox(
                   height: 2,
                 ),
                 Text(
-                  'Release date: ${movie.releaseDate.formatJoinTime}',
+                  'Release date: ${movie.releaseDate!.formatJoinTime}',
                   style: kTextStyle(16, color: Colors.amber),
                 ),
                 const SizedBox(
@@ -150,7 +150,7 @@ class _MovieDetailState extends ConsumerState<MovieDetail> {
                           color: Colors.yellow,
                         ),
                         Text(
-                          movie.voteAverage.toStringAsFixed(1),
+                          movie.voteAverage!.toStringAsFixed(1),
                           style: kTextStyle(20),
                         ),
                         Text(
@@ -214,7 +214,7 @@ class _MovieDetailState extends ConsumerState<MovieDetail> {
                   },
                 ),
                 Text(
-                  movie.overview,
+                  movie.overview!,
                   style: kTextStyle(16),
                 ),
               ],

@@ -12,13 +12,15 @@ import '/utils/enums.dart';
 class MoviePreview extends StatelessWidget {
   final MovieResponse movieResponse;
   final MovieType movieType;
-  const MoviePreview({required this.movieResponse, required this.movieType, super.key});
+  const MoviePreview(
+      {required this.movieResponse, required this.movieType, super.key});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        navigateTo(context, MovieDetail(movieResponse: movieResponse, movieType: movieType));
+        navigateTo(context,
+            MovieDetail(movieResponse: movieResponse, movieType: movieType));
       },
       child: Hero(
         tag: movieResponse.movie!,
@@ -50,9 +52,9 @@ class MoviePreview extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  movieResponse.movie!.title.length < 40
-                      ? movieResponse.movie!.title
-                      : '${movieResponse.movie!.title.substring(0, 41)} ...',
+                  movieResponse.movie!.title!.length < 40
+                      ? movieResponse.movie!.title!
+                      : '${movieResponse.movie!.title!.substring(0, 41)} ...',
                   style: kTextStyle(15),
                   softWrap: true,
                 ),

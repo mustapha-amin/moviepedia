@@ -62,11 +62,10 @@ class _HomeState extends ConsumerState<Home> {
             )
           ],
         ),
-        switch (popularMovies) {
-          ([], Status.initial, _) => const SizedBox(),
-          ([], Status.loading, _) =>
-            const Center(child: CircularProgressIndicator()),
-          ([], Status.failure, _) =>
+        switch (popularMovies.$2) {
+          Status.initial => const SizedBox(),
+          Status.loading => const Center(child: CircularProgressIndicator()),
+          Status.failure =>
             Center(child: Text(ref.watch(popularMoviesProvider).$3!)),
           _ => SizedBox(
               height: context.screenHeight * .48,
@@ -106,11 +105,10 @@ class _HomeState extends ConsumerState<Home> {
             )
           ],
         ),
-        switch (upcomingMovies) {
-          ([], Status.initial, _) => const SizedBox(),
-          ([], Status.loading, _) =>
-            const Center(child: CircularProgressIndicator()),
-          ([], Status.failure, _) =>
+        switch (upcomingMovies.$2) {
+          Status.initial => const SizedBox(),
+          Status.loading => const Center(child: CircularProgressIndicator()),
+          Status.failure =>
             Center(child: Text(ref.watch(upcomingMoviesProvider).$3!)),
           _ => SizedBox(
               height: context.screenHeight * .48,
@@ -151,11 +149,10 @@ class _HomeState extends ConsumerState<Home> {
             )
           ],
         ),
-        switch (topRatedMovies) {
-          ([], Status.initial, _) => const SizedBox(),
-          ([], Status.loading, _) =>
-            const Center(child: CircularProgressIndicator()),
-          ([], Status.failure, _) =>
+        switch (topRatedMovies.$2) {
+          Status.initial => const SizedBox(),
+          Status.loading => const Center(child: CircularProgressIndicator()),
+          Status.failure =>
             Center(child: Text(ref.watch(topRatedMoviesProvider).$3!)),
           _ => SizedBox(
               height: context.screenHeight * .48,
