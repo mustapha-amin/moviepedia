@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:moviepedia/features/home/views/home.dart';
 import 'package:moviepedia/utils/extensions.dart';
 import 'package:moviepedia/utils/kTextStyle.dart';
-
+import '../../home/controllers/popular_movies.dart';
 import '../../explore/controller/search_movies.dart';
 import '../../explore/views/explore.dart';
 
@@ -60,12 +60,15 @@ class _AppBtmNavBarState extends ConsumerState<AppBtmNavBar> {
                   },
                 ),
               )
-            : Text(
-                "MoviePedia",
-                style: kTextStyle(
-                  30,
-                  color: Colors.amber,
-                  fontWeight: FontWeight.bold,
+            : GestureDetector(
+                onTap: () => log(ref.watch(popularMoviesProvider).$3!),
+                child: Text(
+                  "MoviePedia",
+                  style: kTextStyle(
+                    30,
+                    color: Colors.amber,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
       ),

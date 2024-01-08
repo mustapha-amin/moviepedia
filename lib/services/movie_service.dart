@@ -16,7 +16,7 @@ class MovieService {
 
   MovieService({this.dio});
 
-  Future<({List<Movie>? movie, String? error})> fetchMovies(
+  Future<({List<dynamic>? movie, String? error})> fetchMovies(
     MovieType movieType,
     WidgetRef ref,
   ) async {
@@ -45,7 +45,10 @@ class MovieService {
         error: null,
       );
     } on DioException catch (e) {
-      return (movie: null, error: e.message);
+      return (
+        movie: [],
+        error: e.message,
+      );
     }
   }
 
@@ -59,7 +62,10 @@ class MovieService {
         error: null,
       );
     } on DioException catch (e) {
-      return (cast: null, error: e.message);
+      return (
+        cast: <Cast>[],
+        error: e.message,
+      );
     }
   }
 
@@ -77,7 +83,7 @@ class MovieService {
         error: null
       );
     } on DioException catch (e) {
-      return (result: null, error: e.message);
+      return (result: <Movie>[], error: e.message);
     }
   }
 }

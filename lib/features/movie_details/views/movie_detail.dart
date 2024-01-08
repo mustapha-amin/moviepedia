@@ -74,7 +74,7 @@ class _MovieDetailState extends ConsumerState<MovieDetail> {
                   borderRadius: BorderRadius.circular(10),
                   child: CachedNetworkImage(
                     imageUrl: Paths.imagePathGen(
-                      movie.backdropPath,
+                      movie.backdropPath ?? movie.posterPath,
                     ),
                     fit: BoxFit.cover,
                     color: Colors.black.withOpacity(0.2),
@@ -96,7 +96,9 @@ class _MovieDetailState extends ConsumerState<MovieDetail> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
                       child: CachedNetworkImage(
-                        imageUrl: Paths.imagePathGen(movie.backdropPath),
+                        imageUrl: Paths.imagePathGen(
+                          movie.backdropPath ?? movie.posterPath,
+                        ),
                         fit: BoxFit.cover,
                         width: context.screenWidth * .5,
                         height: context.screenHeight * .4,
@@ -197,7 +199,7 @@ class _MovieDetailState extends ConsumerState<MovieDetail> {
                       )
                     : Consumer(
                         builder: (context, ref, _) {
-                          final cast = ref.read(fetchMovieCastProvider(
+                          final cast = ref.watch(fetchMovieCastProvider(
                               widget.movieResponse!.movie!.id!));
                           return cast.when(
                             data: (data) => CastListView(castList: data.cast!),
@@ -205,7 +207,8 @@ class _MovieDetailState extends ConsumerState<MovieDetail> {
                               "An error occured",
                               style: kTextStyle(15),
                             ),
-                            loading: () => const Center(child: CircularProgressIndicator()),
+                            loading: () => const Center(
+                                child: CircularProgressIndicator()),
                           );
                         },
                       ),
