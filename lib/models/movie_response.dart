@@ -1,5 +1,7 @@
 library movie_response;
 
+import 'package:moviepedia/utils/extensions.dart';
+
 part 'cast.dart';
 part 'movie.dart';
 

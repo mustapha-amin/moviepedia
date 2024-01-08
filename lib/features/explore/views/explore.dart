@@ -21,64 +21,75 @@ class ExploreMovies extends ConsumerWidget {
     return ref
         .watch(searchMoviesProvider(ref.watch(searchControllerTextProvider)))
         .when(
-          data: (data) => ListView.builder(
-            itemCount: data.result!.length,
-            itemBuilder: (context, index) {
-              return InkWell(
-                onTap: () => navigateTo(
-                    context,
-                    MovieDetail(
-                      movieResponse: MovieResponse(movie: data.result![index]),
-                    )),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: context.screenWidth * .3,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: CachedNetworkImage(
-                          imageUrl: Paths.imagePathGen(
-                              data.result![index]!.posterPath),
-                          width: context.screenWidth * .3,
-                          placeholder: (context, _) {
-                            return ShimmerImage(
-                              height: context.screenHeight * .3,
-                              width: context.screenWidth * .3,
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 25,
-                    ),
-                    Expanded(
-                      child: Column(
+          data: (data) => data.result!.isEmpty
+              ? Center(
+                  child: Text(
+                    "No result",
+                    style: kTextStyle(25),
+                  ),
+                )
+              : ListView.builder(
+                  itemCount: data.result!.length,
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                      onTap: () => navigateTo(
+                          context,
+                          MovieDetail(
+                            movieResponse: MovieResponse(
+                              movie: data.result![index],
+                              cast: [],
+                            ),
+                            isExplore: true,
+                          )),
+                      child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Wrap(
-                            children: [
-                              Text(
-                                data.result![index]!.title!,
-                                style:
-                                    kTextStyle(17, fontWeight: FontWeight.bold),
+                          SizedBox(
+                            width: context.screenWidth * .3,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: CachedNetworkImage(
+                                imageUrl: Paths.imagePathGen(
+                                    data.result![index]!.posterPath),
+                                width: context.screenWidth * .3,
+                                placeholder: (context, _) {
+                                  return ShimmerImage(
+                                    height: context.screenHeight * .3,
+                                    width: context.screenWidth * .3,
+                                  );
+                                },
                               ),
-                            ],
+                            ),
                           ),
-                          Text(
-                            AppConstants.generateGenre(
-                                data.result![index]!.genreIds!),
-                            style: kTextStyle(13),
+                          const SizedBox(
+                            width: 25,
                           ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Wrap(
+                                  children: [
+                                    Text(
+                                      data.result![index]!.title!,
+                                      style: kTextStyle(17,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
+                                Text(
+                                  AppConstants.generateGenre(
+                                      data.result![index]!.genreIds!),
+                                  style: kTextStyle(13),
+                                ),
+                              ],
+                            ),
+                          )
                         ],
-                      ),
-                    )
-                  ],
-                ).padY(5),
-              );
-            },
-          ).padAll(10),
+                      ).padY(5),
+                    );
+                  },
+                ).padAll(10),
           error: (e, __) => Center(
             child: Text("An error occured $e", style: kTextStyle(17)),
           ),

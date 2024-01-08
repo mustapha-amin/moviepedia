@@ -10,7 +10,7 @@ class Movie {
   String? overview;
   double? popularity;
   String? posterPath;
-  DateTime? releaseDate;
+  String? releaseDate;
   String? title;
   bool? video;
   double? voteAverage;
@@ -43,7 +43,9 @@ class Movie {
         overview: json["overview"] ?? '',
         popularity: json["popularity"]?.toDouble() ?? 0,
         posterPath: json["poster_path"] ?? '',
-        releaseDate: DateTime.parse(json["release_date"]),
+        releaseDate: json["release_date"] == ""
+            ? "unknown date"
+            : DateTime.tryParse(json["release_date"])!.formatJoinTime,
         title: json["title"] ?? '',
         video: json["video"] ?? '',
         voteAverage: json["vote_average"]?.toDouble(),

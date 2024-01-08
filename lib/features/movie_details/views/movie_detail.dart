@@ -19,7 +19,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class MovieDetail extends ConsumerStatefulWidget {
   MovieResponse? movieResponse;
   MovieType? movieType;
-  MovieDetail({this.movieResponse, this.movieType, super.key});
+  bool? isExplore;
+  MovieDetail({
+    this.movieResponse,
+    this.movieType,
+    this.isExplore = false,
+    super.key,
+  });
 
   @override
   ConsumerState<MovieDetail> createState() => _MovieDetailState();
@@ -36,18 +42,22 @@ class _MovieDetailState extends ConsumerState<MovieDetail> {
     casts = widget.movieResponse!.cast!;
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final movieProvider = ref.watch(switch (widget.movieType) {
-        MovieType.popular => popularMoviesProvider,
-        MovieType.topRated => topRatedMoviesProvider,
-        _ => upcomingMoviesProvider
-      });
-      movieProvider.$1
-              .firstWhere((element) => element.movie!.id == movie.id)
-              .cast!
-              .isEmpty
-          ? ref.read(castProvider.notifier).updateCast(
-              widget.movieResponse!.movie!.id, ref, widget.movieType!)
-          : null;
+      if (!widget.isExplore!) {
+        final movieProvider = ref.watch(switch (widget.movieType) {
+          MovieType.popular => popularMoviesProvider,
+          MovieType.topRated => topRatedMoviesProvider,
+          _ => upcomingMoviesProvider
+        });
+        movieProvider.$1
+                .firstWhere((element) => element.movie!.id == movie.id)
+                .cast!
+                .isEmpty
+            ? ref.read(castProvider.notifier).updateCast(
+                widget.movieResponse!.movie!.id, ref, widget.movieType!)
+            : null;
+      } else {
+        
+      }
     });
   }
 
@@ -134,7 +144,7 @@ class _MovieDetailState extends ConsumerState<MovieDetail> {
                   height: 2,
                 ),
                 Text(
-                  'Release date: ${movie.releaseDate!.formatJoinTime}',
+                  'Release date: ${movie.releaseDate!}',
                   style: kTextStyle(16, color: Colors.amber),
                 ),
                 const SizedBox(
@@ -174,45 +184,47 @@ class _MovieDetailState extends ConsumerState<MovieDetail> {
                     )
                   ],
                 ),
-                Consumer(
-                  builder: (context, ref, _) {
-                    final castController = ref.watch(castProvider);
-                    return switch (castController.$2) {
-                      Status.loading =>
-                        const Center(child: CircularProgressIndicator()),
-                      _ => SizedBox(
-                          height: context.screenHeight * .3,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                " Cast",
-                                style: kTextStyle(
-                                  35,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Expanded(
-                                child: ListView(
-                                  scrollDirection: Axis.horizontal,
-                                  physics: const BouncingScrollPhysics(),
+                !widget.isExplore!
+                    ? Consumer(
+                        builder: (context, ref, _) {
+                          final castController = ref.watch(castProvider);
+                          return switch (castController.$2) {
+                            Status.loading =>
+                              const Center(child: CircularProgressIndicator()),
+                            _ => SizedBox(
+                                height: context.screenHeight * .3,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    ...castController.$1.map(
-                                      (cast) => Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 10),
-                                        child: CastPreview(cast: cast),
+                                    Text(
+                                      " Cast",
+                                      style: kTextStyle(
+                                        35,
+                                        fontWeight: FontWeight.bold,
                                       ),
-                                    )
+                                    ),
+                                    Expanded(
+                                      child: ListView(
+                                        scrollDirection: Axis.horizontal,
+                                        physics: const BouncingScrollPhysics(),
+                                        children: [
+                                          ...castController.$1.map(
+                                            (cast) => Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 10),
+                                              child: CastPreview(cast: cast),
+                                            ),
+                                          )
+                                        ],
+                                      ).padX(2),
+                                    ),
                                   ],
-                                ).padX(2),
-                              ),
-                            ],
-                          ),
-                        )
-                    };
-                  },
-                ),
+                                ),
+                              )
+                          };
+                        },
+                      )
+                    : const SizedBox(),
                 Text(
                   movie.overview!,
                   style: kTextStyle(16),
