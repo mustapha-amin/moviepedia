@@ -8,3 +8,9 @@ final searchMoviesProvider =
   final movieService = ref.watch(movieServiceProvider);
   return movieService.searchMovie(query);
 });
+
+final fetchMovieCastProvider =
+    FutureProvider.family<({List<Cast>? cast, String? error}), int>((ref, id) async {
+  final movieService = ref.watch(movieServiceProvider);
+  return movieService.fetchCast(id);
+});

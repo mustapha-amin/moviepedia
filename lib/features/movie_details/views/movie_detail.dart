@@ -3,10 +3,12 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:moviepedia/core/contants.dart';
 import 'package:moviepedia/core/paths.dart';
+import 'package:moviepedia/features/explore/controller/search_movies.dart';
 import 'package:moviepedia/features/home/controllers/popular_movies.dart';
 import 'package:moviepedia/features/home/controllers/top_rated_movies.dart';
 import 'package:moviepedia/features/home/controllers/upcoming_movies.dart';
 import 'package:moviepedia/features/movie_details/controller/cast_contoller.dart';
+import 'package:moviepedia/features/movie_details/widgets/cast_listview.dart';
 import 'package:moviepedia/features/movie_details/widgets/cast_widget.dart';
 import 'package:moviepedia/models/movie_response.dart';
 import 'package:moviepedia/utils/enums.dart';
@@ -55,9 +57,7 @@ class _MovieDetailState extends ConsumerState<MovieDetail> {
             ? ref.read(castProvider.notifier).updateCast(
                 widget.movieResponse!.movie!.id, ref, widget.movieType!)
             : null;
-      } else {
-        
-      }
+      } else {}
     });
   }
 
@@ -191,40 +191,24 @@ class _MovieDetailState extends ConsumerState<MovieDetail> {
                           return switch (castController.$2) {
                             Status.loading =>
                               const Center(child: CircularProgressIndicator()),
-                            _ => SizedBox(
-                                height: context.screenHeight * .3,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      " Cast",
-                                      style: kTextStyle(
-                                        35,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: ListView(
-                                        scrollDirection: Axis.horizontal,
-                                        physics: const BouncingScrollPhysics(),
-                                        children: [
-                                          ...castController.$1.map(
-                                            (cast) => Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 10),
-                                              child: CastPreview(cast: cast),
-                                            ),
-                                          )
-                                        ],
-                                      ).padX(2),
-                                    ),
-                                  ],
-                                ),
-                              )
+                            _ => CastListView(castList: castController.$1),
                           };
                         },
                       )
-                    : const SizedBox(),
+                    : Consumer(
+                        builder: (context, ref, _) {
+                          final cast = ref.read(fetchMovieCastProvider(
+                              widget.movieResponse!.movie!.id!));
+                          return cast.when(
+                            data: (data) => CastListView(castList: data.cast!),
+                            error: (_, __) => Text(
+                              "An error occured",
+                              style: kTextStyle(15),
+                            ),
+                            loading: () => const Center(child: CircularProgressIndicator()),
+                          );
+                        },
+                      ),
                 Text(
                   movie.overview!,
                   style: kTextStyle(16),
