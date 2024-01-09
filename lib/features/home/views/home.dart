@@ -33,144 +33,181 @@ class _HomeState extends ConsumerState<Home> {
   Widget build(BuildContext context) {
     var popularMovies = ref.watch(popularMoviesProvider);
     var upcomingMovies = ref.watch(upcomingMoviesProvider);
-    var topRatedMovies = ref.watch(topRatedMoviesProvider);
-    return ListView(
-      children: [
-        const SizedBox(
-          height: 30,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    var topratedMovies = ref.watch(topRatedMoviesProvider);
+    bool errorsAreSame = popularMovies.error == upcomingMovies.error &&
+        upcomingMovies.error == topratedMovies.error;
+    bool errorsExist = popularMovies.error!.isNotEmpty &&
+        upcomingMovies.error!.isNotEmpty &&
+        topratedMovies.error!.isNotEmpty;
+
+    return switch (errorsExist && errorsAreSame) {
+      true => Center(
+          child: Text(
+            popularMovies.error!,
+            style: kTextStyle(20),
+          ),
+        ).padX(10),
+      _ => ListView(
           children: [
-            Text(
-              "Popular",
-              style: kTextStyle(30),
+            const SizedBox(
+              height: 30,
             ),
-            TextButton(
-              onPressed: () {
-                navigateTo(
-                  context,
-                  const AllMovies(
-                    movieType: MovieType.popular,
-                  ),
-                );
-              },
-              child: Text(
-                "View all",
-                style: kTextStyle(16, color: Colors.amber),
-              ),
-            )
+            Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Popular",
+                      style: kTextStyle(30),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        navigateTo(
+                          context,
+                          const AllMovies(
+                            movieType: MovieType.popular,
+                          ),
+                        );
+                      },
+                      child: Text(
+                        "View all",
+                        style: kTextStyle(16, color: Colors.amber),
+                      ),
+                    )
+                  ],
+                ),
+                switch (popularMovies.isLoading) {
+                  true => const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  _ => popularMovies.error!.isEmpty
+                      ? SizedBox(
+                          height: context.screenHeight * .48,
+                          child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: [
+                              ...popularMovies.movieResponse!.map(
+                                (tmovie) => popularMovies.movieResponse!
+                                            .indexOf(tmovie) <
+                                        11
+                                    ? MoviePreview(
+                                        movieResponse: tmovie,
+                                        movieType: MovieType.popular,
+                                      )
+                                    : const SizedBox(),
+                              ),
+                            ],
+                          ),
+                        )
+                      : Center(
+                          child: Text(topratedMovies.error!),
+                        )
+                },
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Upcoming",
+                      style: kTextStyle(30),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        navigateTo(
+                          context,
+                          const AllMovies(
+                            movieType: MovieType.upcoming,
+                          ),
+                        );
+                      },
+                      child: Text(
+                        "View all",
+                        style: kTextStyle(16, color: Colors.amber),
+                      ),
+                    )
+                  ],
+                ),
+                switch (upcomingMovies.isLoading) {
+                  true => const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  _ => upcomingMovies.error!.isEmpty
+                      ? SizedBox(
+                          height: context.screenHeight * .48,
+                          child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: [
+                              ...topratedMovies.movieResponse!.map(
+                                (tmovie) => topratedMovies.movieResponse!
+                                            .indexOf(tmovie) <
+                                        11
+                                    ? MoviePreview(
+                                        movieResponse: tmovie,
+                                        movieType: MovieType.popular,
+                                      )
+                                    : const SizedBox(),
+                              ),
+                            ],
+                          ),
+                        )
+                      : Center(
+                          child: Text(topratedMovies.error!),
+                        )
+                },
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Top Rated",
+                      style: kTextStyle(30),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        navigateTo(
+                          context,
+                          const AllMovies(
+                            movieType: MovieType.topRated,
+                          ),
+                        );
+                      },
+                      child: Text(
+                        "View all",
+                        style: kTextStyle(16, color: Colors.amber),
+                      ),
+                    )
+                  ],
+                ),
+                switch (topratedMovies.isLoading) {
+                  true => const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  _ => topratedMovies.error!.isEmpty
+                      ? SizedBox(
+                          height: context.screenHeight * .48,
+                          child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: [
+                              ...topratedMovies.movieResponse!.map(
+                                (tmovie) => topratedMovies.movieResponse!
+                                            .indexOf(tmovie) <
+                                        11
+                                    ? MoviePreview(
+                                        movieResponse: tmovie,
+                                        movieType: MovieType.popular,
+                                      )
+                                    : const SizedBox(),
+                              ),
+                            ],
+                          ),
+                        )
+                      : Center(
+                          child: Text(topratedMovies.error!),
+                        )
+                }
+              ],
+            ).padX(14)
           ],
-        ),
-        switch (popularMovies.$2) {
-          Status.initial => const SizedBox(),
-          Status.loading => const Center(child: CircularProgressIndicator()),
-          Status.failure =>
-            Center(child: Text(ref.watch(popularMoviesProvider).$3!)),
-          _ => SizedBox(
-              height: context.screenHeight * .48,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: [
-                  ...popularMovies.$1.map(
-                    (pmovie) => popularMovies.$1.indexOf(pmovie) < 11
-                        ? MoviePreview(
-                            movieResponse: pmovie, movieType: MovieType.popular)
-                        : const SizedBox(),
-                  ),
-                ],
-              ),
-            ),
-        },
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              "Upcoming",
-              style: kTextStyle(30),
-            ),
-            TextButton(
-              onPressed: () {
-                navigateTo(
-                  context,
-                  const AllMovies(
-                    movieType: MovieType.upcoming,
-                  ),
-                );
-              },
-              child: Text(
-                "View all",
-                style: kTextStyle(16, color: Colors.amber),
-              ),
-            )
-          ],
-        ),
-        switch (upcomingMovies.$2) {
-          Status.initial => const SizedBox(),
-          Status.loading => const Center(child: CircularProgressIndicator()),
-          Status.failure =>
-            Center(child: Text(ref.watch(upcomingMoviesProvider).$3!)),
-          _ => SizedBox(
-              height: context.screenHeight * .48,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: [
-                  ...upcomingMovies.$1.map(
-                    (umovie) => popularMovies.$1.indexOf(umovie) < 11
-                        ? MoviePreview(
-                            movieResponse: umovie,
-                            movieType: MovieType.upcoming)
-                        : const SizedBox(),
-                  ),
-                ],
-              ),
-            ),
-        },
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              "Top Rated",
-              style: kTextStyle(30),
-            ),
-            TextButton(
-              onPressed: () {
-                navigateTo(
-                  context,
-                  const AllMovies(
-                    movieType: MovieType.topRated,
-                  ),
-                );
-              },
-              child: Text(
-                "View all",
-                style: kTextStyle(16, color: Colors.amber),
-              ),
-            )
-          ],
-        ),
-        switch (topRatedMovies.$2) {
-          Status.initial => const SizedBox(),
-          Status.loading => const Center(child: CircularProgressIndicator()),
-          Status.failure =>
-            Center(child: Text(ref.watch(topRatedMoviesProvider).$3!)),
-          _ => SizedBox(
-              height: context.screenHeight * .48,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: [
-                  ...topRatedMovies.$1.map(
-                    (tmovie) => topRatedMovies.$1.indexOf(tmovie) < 11
-                        ? MoviePreview(
-                            movieResponse: tmovie,
-                            movieType: MovieType.topRated)
-                        : const SizedBox(),
-                  ),
-                ],
-              ),
-            ),
-        }
-      ],
-    ).padX(14);
+        )
+    };
   }
 }

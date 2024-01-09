@@ -1,5 +1,7 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:moviepedia/core/providers.dart';
+import 'package:moviepedia/features/home/controllers/movie_state.dart';
 import 'package:moviepedia/models/movie_response.dart';
 import 'package:moviepedia/services/movie_service.dart';
 import 'package:moviepedia/utils/enums.dart';
@@ -7,51 +9,53 @@ import 'package:moviepedia/utils/enums.dart';
 import '../../../core/typedefs.dart';
 
 final upcomingMoviesProvider =
-    StateNotifierProvider<UpcomingMoviesNotifier, ResponseState<MovieResponse>>(
-        (ref) {
+    StateNotifierProvider<UpcomingMoviesNotifier, MovieState>((ref) {
   return UpcomingMoviesNotifier(
     movieService: ref.watch(movieServiceProvider),
   );
 });
 
-class UpcomingMoviesNotifier
-    extends StateNotifier<ResponseState<MovieResponse>> {
+class UpcomingMoviesNotifier extends StateNotifier<MovieState> {
   MovieService? movieService;
 
   UpcomingMoviesNotifier({
     this.movieService,
-  }) : super(([], Status.initial, null));
+  }) : super(MovieState.initialState());
 
-  void loadMovies(WidgetRef ref) async {
-    final int prevState = ref.watch(upcomingPageProvider);
+  Future<void> loadMovies(WidgetRef ref) async {
+    final int prevState = ref.watch(popularPageProvider);
     ref.read(upcomingPageProvider.notifier).state++;
-    state = (state.$1, Status.loading, null);
-    var newMovies = await movieService!.fetchMovies(
-      MovieType.upcoming,
-      ref,
-    );
-    if (newMovies.error == null) {
-      state = (
-        [
-          ...state.$1,
-          ...newMovies.movie!.map((e) => MovieResponse(movie: e, cast: []))
-        ],
-        Status.success,
-        null,
+    try {
+      var newMovies = await movieService!.fetchMovies(
+        MovieType.popular,
+        ref,
       );
-    } else {
-      state = (state.$1, Status.failure, newMovies.error);
+      List<MovieResponse> movies = newMovies
+          .map((e) => MovieResponse(
+                movie: e,
+                cast: [],
+              ))
+          .toList();
+      state = state.copyWith(
+        movieResponse: [...state.movieResponse!, ...movies],
+        isLoading: false,
+      );
+    } catch (e, _) {
+      state = state.copyWith(
+        error: e.toString(),
+        isLoading: false,
+      );
       ref.read(upcomingPageProvider.notifier).state = prevState;
     }
   }
 
   void updateCast(int? id, List<Cast> cast) {
-    List<MovieResponse> movieResponseList = state.$1;
+    List<MovieResponse> movieResponseList = state.movieResponse!;
     MovieResponse movieResponse =
-        state.$1.firstWhere((movie) => movie.movie!.id == id);
+        state.movieResponse!.firstWhere((movie) => movie.movie!.id == id);
     int index = movieResponseList.indexOf(movieResponse);
     movieResponse = movieResponse.updateCastList(cast);
     movieResponseList[index] = movieResponse;
-    state = (movieResponseList, Status.success, null);
+    state = state.copyWith(movieResponse: movieResponseList);
   }
 }

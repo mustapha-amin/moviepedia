@@ -45,12 +45,14 @@ class _MovieDetailState extends ConsumerState<MovieDetail> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!widget.isExplore!) {
-        final movieProvider = ref.watch(switch (widget.movieType) {
-          MovieType.popular => popularMoviesProvider,
-          MovieType.topRated => topRatedMoviesProvider,
-          _ => upcomingMoviesProvider
-        });
-        movieProvider.$1
+        final movies = ref
+            .watch(switch (widget.movieType) {
+              MovieType.popular => popularMoviesProvider,
+              MovieType.topRated => topRatedMoviesProvider,
+              _ => upcomingMoviesProvider
+            })
+            .movieResponse;
+        movies!
                 .firstWhere((element) => element.movie!.id == movie.id)
                 .cast!
                 .isEmpty
@@ -190,10 +192,12 @@ class _MovieDetailState extends ConsumerState<MovieDetail> {
                     ? Consumer(
                         builder: (context, ref, _) {
                           final castController = ref.watch(castProvider);
-                          return switch (castController.$2) {
-                            Status.loading =>
+                          return switch (castController.isLoading) {
+                            true =>
                               const Center(child: CircularProgressIndicator()),
-                            _ => CastListView(castList: castController.$1),
+                            _ => castController.error!.isEmpty
+                                ? CastListView(castList: castController.cast!)
+                                : Text(castController.error!),
                           };
                         },
                       )
@@ -202,13 +206,14 @@ class _MovieDetailState extends ConsumerState<MovieDetail> {
                           final cast = ref.watch(fetchMovieCastProvider(
                               widget.movieResponse!.movie!.id!));
                           return cast.when(
-                            data: (data) => CastListView(castList: data.cast!),
+                            data: (data) => CastListView(castList: data!),
                             error: (_, __) => Text(
                               "An error occured",
                               style: kTextStyle(15),
                             ),
                             loading: () => const Center(
-                                child: CircularProgressIndicator()),
+                              child: CircularProgressIndicator(),
+                            ),
                           );
                         },
                       ),

@@ -22,7 +22,7 @@ class ExploreMovies extends ConsumerWidget {
     return searchControllerProvider.isEmpty
         ? const SizedBox()
         : ref.watch(searchMoviesProvider(searchControllerProvider)).when(
-              data: (data) => data.result!.isEmpty
+              data: (data) => data!.isEmpty
                   ? Center(
                       child: Text(
                         "No result",
@@ -30,14 +30,14 @@ class ExploreMovies extends ConsumerWidget {
                       ),
                     )
                   : ListView.builder(
-                      itemCount: data.result!.length,
+                      itemCount: data.length,
                       itemBuilder: (context, index) {
                         return InkWell(
                           onTap: () => navigateTo(
                               context,
                               MovieDetail(
                                 movieResponse: MovieResponse(
-                                  movie: data.result![index],
+                                  movie: data[index],
                                   cast: [],
                                 ),
                                 isExplore: true,
@@ -51,7 +51,7 @@ class ExploreMovies extends ConsumerWidget {
                                   borderRadius: BorderRadius.circular(10),
                                   child: CachedNetworkImage(
                                     imageUrl: Paths.imagePathGen(
-                                        data.result![index]!.posterPath),
+                                        data[index]!.posterPath),
                                     width: context.screenWidth * .3,
                                     placeholder: (context, _) {
                                       return ShimmerImage(
@@ -72,7 +72,7 @@ class ExploreMovies extends ConsumerWidget {
                                     Wrap(
                                       children: [
                                         Text(
-                                          data.result![index]!.title!,
+                                          data[index]!.title!,
                                           style: kTextStyle(17,
                                               fontWeight: FontWeight.bold),
                                         ),
@@ -80,7 +80,7 @@ class ExploreMovies extends ConsumerWidget {
                                     ),
                                     Text(
                                       AppConstants.generateGenre(
-                                          data.result![index]!.genreIds!),
+                                          data[index]!.genreIds!),
                                       style: kTextStyle(13),
                                     ),
                                   ],

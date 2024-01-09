@@ -70,7 +70,7 @@ class _AllMoviesState extends ConsumerState<AllMovies> {
                 childAspectRatio: 1 / 2,
               ),
               children: [
-                ...moviesProvider.$1.map(
+                ...moviesProvider.movieResponse!.map(
                   (movieResponse) => SizedBox(
                     width: context.screenWidth * 0.45,
                     child: InkWell(
@@ -84,7 +84,7 @@ class _AllMoviesState extends ConsumerState<AllMovies> {
               ],
             ).padX(5),
           ),
-          if (moviesProvider.$2 == Status.loading)
+          if (moviesProvider.isLoading!)
             const CircularProgressIndicator(),
         ],
       ),

@@ -61,7 +61,8 @@ class _AppBtmNavBarState extends ConsumerState<AppBtmNavBar> {
                 ),
               )
             : GestureDetector(
-                onTap: () => log(ref.watch(popularMoviesProvider).$3!),
+                onTap: () =>
+                    log(ref.watch(popularMoviesProvider).isLoading.toString()),
                 child: Text(
                   "MoviePedia",
                   style: kTextStyle(

@@ -28,7 +28,8 @@ final dioProvider = Provider(
           return handler.next(response);
         },
         onError: (DioException e, handler) {
-          log("<-- Error: ${e.message}");
+          log("<-- Error: ${e.type}");
+          return handler.next(e);
         },
       ),
     );

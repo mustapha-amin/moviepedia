@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:moviepedia/core/exceptions.dart';
 import 'package:moviepedia/core/paths.dart';
 import 'package:moviepedia/core/providers.dart';
 import 'package:moviepedia/models/movie_response.dart';
@@ -16,7 +17,7 @@ class MovieService {
 
   MovieService({this.dio});
 
-  Future<({List<dynamic>? movie, String? error})> fetchMovies(
+  Future<List<Movie>> fetchMovies(
     MovieType movieType,
     WidgetRef ref,
   ) async {
@@ -40,36 +41,38 @@ class MovieService {
       //* movies
       List<dynamic> results = moviesResponse.data['results'];
       List<Movie> movies = results.map((e) => Movie.fromJson(e)).toList();
-      return (
-        movie: movies,
-        error: null,
-      );
+      return movies;
     } on DioException catch (e) {
-      return (
-        movie: [],
-        error: e.message,
-      );
+     switch (e.type) {
+        case DioExceptionType.connectionTimeout:
+          throw const ConnectionTimeoutException();
+        case DioExceptionType.connectionError:
+          throw const NoInternetConnectionException();
+        default:
+          throw const DefaultException();
+      }
     }
   }
 
-  Future<({List<Cast>? cast, String? error})> fetchCast(int? id) async {
+  Future<List<Cast>?> fetchCast(int? id) async {
     try {
       log(id.toString());
       Response response = await dio!.get('/$id/credits');
       List<dynamic> results = response.data['cast'];
-      return (
-        cast: results.map((e) => Cast.fromJson(e)).toList(),
-        error: null,
-      );
+      return results.map((e) => Cast.fromJson(e)).toList();
     } on DioException catch (e) {
-      return (
-        cast: <Cast>[],
-        error: e.message,
-      );
+      switch (e.type) {
+        case DioExceptionType.connectionTimeout:
+          throw const ConnectionTimeoutException();
+        case DioExceptionType.connectionError:
+          throw const NoInternetConnectionException();
+        default:
+          throw const DefaultException();
+      }
     }
   }
 
-  Future<({List<Movie?>? result, String? error})> searchMovie(
+  Future<List<Movie?>> searchMovie(
     String? query,
   ) async {
     try {
@@ -78,12 +81,16 @@ class MovieService {
       });
       List<dynamic> movies = response.data['results'];
       log(movies.length.toString());
-      return (
-        result: movies.map((e) => Movie.fromJson(e)).toList(),
-        error: null
-      );
+      return movies.map((e) => Movie.fromJson(e)).toList();
     } on DioException catch (e) {
-      return (result: <Movie>[], error: e.message);
+      switch (e.type) {
+        case DioExceptionType.connectionTimeout:
+          throw const ConnectionTimeoutException();
+        case DioExceptionType.connectionError:
+          throw const NoInternetConnectionException();
+        default:
+          throw const DefaultException();
+      }
     }
   }
 }
