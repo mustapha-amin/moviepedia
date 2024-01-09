@@ -63,12 +63,15 @@ class _HomeState extends ConsumerState<Home> {
                     ),
                     TextButton(
                       onPressed: () {
-                        navigateTo(
-                          context,
-                          const AllMovies(
-                            movieType: MovieType.popular,
-                          ),
-                        );
+                        topratedMovies.isLoading! ||
+                                topratedMovies.error!.isNotEmpty
+                            ? null
+                            : navigateTo(
+                                context,
+                                const AllMovies(
+                                  movieType: MovieType.popular,
+                                ),
+                              );
                       },
                       child: Text(
                         "View all",
@@ -113,12 +116,15 @@ class _HomeState extends ConsumerState<Home> {
                     ),
                     TextButton(
                       onPressed: () {
-                        navigateTo(
-                          context,
-                          const AllMovies(
-                            movieType: MovieType.upcoming,
-                          ),
-                        );
+                        topratedMovies.isLoading! ||
+                                topratedMovies.error!.isNotEmpty
+                            ? null
+                            : navigateTo(
+                                context,
+                                const AllMovies(
+                                  movieType: MovieType.upcoming,
+                                ),
+                              );
                       },
                       child: Text(
                         "View all",
@@ -163,12 +169,15 @@ class _HomeState extends ConsumerState<Home> {
                     ),
                     TextButton(
                       onPressed: () {
-                        navigateTo(
-                          context,
-                          const AllMovies(
-                            movieType: MovieType.topRated,
-                          ),
-                        );
+                        topratedMovies.isLoading! ||
+                                topratedMovies.error!.isNotEmpty
+                            ? null
+                            : navigateTo(
+                                context,
+                                const AllMovies(
+                                  movieType: MovieType.topRated,
+                                ),
+                              );
                       },
                       child: Text(
                         "View all",
