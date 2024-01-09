@@ -60,16 +60,12 @@ class _AppBtmNavBarState extends ConsumerState<AppBtmNavBar> {
                   },
                 ),
               )
-            : GestureDetector(
-                onTap: () =>
-                    log(ref.watch(popularMoviesProvider).isLoading.toString()),
-                child: Text(
-                  "MoviePedia",
-                  style: kTextStyle(
-                    30,
-                    color: Colors.amber,
-                    fontWeight: FontWeight.bold,
-                  ),
+            : Text(
+                "MoviePedia",
+                style: kTextStyle(
+                  30,
+                  color: Colors.amber,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
       ),
@@ -84,6 +80,10 @@ class _AppBtmNavBarState extends ConsumerState<AppBtmNavBar> {
         currentIndex: ref.watch(btmNavbarIndexProvider),
         onTap: (index) {
           ref.read(btmNavbarIndexProvider.notifier).state = index;
+          if (index != 1) {
+            ref.invalidate(searchMoviesProvider);
+            ref.invalidate(searchControllerTextProvider);
+          }
         },
         items: const [
           BottomNavigationBarItem(label: '', icon: Icon(Icons.home)),
