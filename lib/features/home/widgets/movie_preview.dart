@@ -5,6 +5,7 @@ import 'package:moviepedia/utils/extensions.dart';
 import 'package:moviepedia/utils/kTextStyle.dart';
 import 'package:moviepedia/utils/navigation.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:sizer/sizer.dart';
 import '../../../core/paths.dart';
 import '../../../utils/shimmer_image.dart';
 import '/utils/enums.dart';
@@ -26,7 +27,7 @@ class MoviePreview extends StatelessWidget {
         tag: movieResponse.movie!,
         child: Card(
           child: SizedBox(
-            width: context.screenWidth * .35,
+            width: 35.w,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,

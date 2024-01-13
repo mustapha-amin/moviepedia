@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:moviepedia/core/paths.dart';
 import 'package:moviepedia/utils/extensions.dart';
 import 'package:moviepedia/utils/kTextStyle.dart';
+import 'package:sizer/sizer.dart';
 
 import '../../../models/movie_response.dart';
 
@@ -28,8 +29,7 @@ class GridMoviePreview extends StatelessWidget {
                 fadeOutDuration: const Duration(milliseconds: 100),
                 fit: BoxFit.cover,
                 imageUrl: Paths.imagePathGen(movie.posterPath),
-                height: context.screenHeight * .4,
-                width: context.screenWidth * .45,
+                width: 45.w,
               ),
             ),
           ),
