@@ -39,6 +39,7 @@ class _AppBtmNavBarState extends ConsumerState<AppBtmNavBar> {
     TextEditingController searchController = TextEditingController();
     return Scaffold(
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         elevation: 0,
         title: ref.watch(btmNavbarIndexProvider) == 1
             ? SizedBox(

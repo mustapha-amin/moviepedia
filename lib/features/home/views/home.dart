@@ -85,7 +85,7 @@ class _HomeState extends ConsumerState<Home> {
                     children: [
                       Text(
                         "Popular",
-                        style: kTextStyle(30),
+                        style: kTextStyle(28, fontWeight: FontWeight.bold),
                       ),
                       TextButton(
                         onPressed: () {
@@ -112,7 +112,7 @@ class _HomeState extends ConsumerState<Home> {
                       ),
                     _ => popularMovies.error!.isEmpty
                         ? SizedBox(
-                            height: context.screenHeight * .48,
+                            height: context.screenHeight * .33,
                             child: ListView(
                               scrollDirection: Axis.horizontal,
                               children: [
@@ -138,7 +138,7 @@ class _HomeState extends ConsumerState<Home> {
                     children: [
                       Text(
                         "Upcoming",
-                        style: kTextStyle(30),
+                        style: kTextStyle(28, fontWeight: FontWeight.bold),
                       ),
                       TextButton(
                         onPressed: () {
@@ -165,7 +165,7 @@ class _HomeState extends ConsumerState<Home> {
                       ),
                     _ => upcomingMovies.error!.isEmpty
                         ? SizedBox(
-                            height: context.screenHeight * .48,
+                            height: context.screenHeight * .33,
                             child: ListView(
                               scrollDirection: Axis.horizontal,
                               children: [
@@ -191,7 +191,7 @@ class _HomeState extends ConsumerState<Home> {
                     children: [
                       Text(
                         "Top Rated",
-                        style: kTextStyle(30),
+                        style: kTextStyle(28, fontWeight: FontWeight.bold),
                       ),
                       TextButton(
                         onPressed: () {
@@ -218,7 +218,7 @@ class _HomeState extends ConsumerState<Home> {
                       ),
                     _ => topratedMovies.error!.isEmpty
                         ? SizedBox(
-                            height: context.screenHeight * .48,
+                            height: context.screenHeight * .3,
                             child: ListView(
                               scrollDirection: Axis.horizontal,
                               children: [

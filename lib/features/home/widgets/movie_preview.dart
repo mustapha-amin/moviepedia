@@ -27,41 +27,39 @@ class MoviePreview extends StatelessWidget {
         tag: movieResponse.movie!,
         child: Card(
           child: SizedBox(
-            width: 35.w,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: CachedNetworkImage(
-                      fadeInDuration: const Duration(milliseconds: 100),
-                      fadeOutDuration: const Duration(milliseconds: 100),
-                      fit: BoxFit.cover,
-                      imageUrl:
-                          Paths.imagePathGen(movieResponse.movie!.posterPath),
-                      height: context.screenHeight * .35,
-                      width: context.screenWidth * .38,
-                      placeholder: (context, _) {
-                        return ShimmerImage(
-                          height: context.screenHeight * .35,
-                          width: context.screenHeight * .38,
-                        );
-                      },
+              width: 33.w,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: CachedNetworkImage(
+                        fadeInDuration: const Duration(milliseconds: 100),
+                        fadeOutDuration: const Duration(milliseconds: 100),
+                        fit: BoxFit.cover,
+                        imageUrl:
+                            Paths.imagePathGen(movieResponse.movie!.posterPath),
+                        height: context.screenHeight * .28,
+                        width: context.screenWidth * .38,
+                        placeholder: (context, _) {
+                          return ShimmerImage(
+                            height: context.screenHeight * .28,
+                            width: context.screenHeight * .38,
+                          );
+                        },
+                      ),
                     ),
                   ),
-                ),
-                Text(
-                  movieResponse.movie!.title!.length < 40
-                      ? movieResponse.movie!.title!
-                      : '${movieResponse.movie!.title!.substring(0, 41)} ...',
-                  style: kTextStyle(15),
-                  softWrap: true,
-                ),
-              ],
-            ).padX(7),
-          ).padAll(3),
+                  Text(
+                    movieResponse.movie!.title!.length < 15
+                        ? movieResponse.movie!.title!
+                        : '${movieResponse.movie!.title!.substring(0, 15)}...',
+                    style: kTextStyle(13, fontWeight: FontWeight.bold),
+                  ).padX(3),
+                ],
+              )).padAll(3),
         ),
       ),
     );
