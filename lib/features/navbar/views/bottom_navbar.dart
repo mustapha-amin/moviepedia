@@ -36,33 +36,17 @@ class _AppBtmNavBarState extends ConsumerState<AppBtmNavBar> {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController searchController = TextEditingController();
     return Scaffold(
       appBar: AppBar(
         scrolledUnderElevation: 0,
         elevation: 0,
         title: ref.watch(btmNavbarIndexProvider) == 1
-            ? SizedBox(
-                height: context.screenHeight * .07,
-                child: SearchBar(
-                  onTap: () {
-                    log(ref.watch(searchControllerTextProvider));
-                  },
-                  hintText: "Search here",
-                  hintStyle: MaterialStatePropertyAll(
-                    kTextStyle(
-                      15,
-                      color: Colors.grey,
-                    ),
-                  ),
-                  controller: searchController,
-                  onChanged: (val) {
-                    ref.read(searchControllerTextProvider.notifier).state = val;
-                  },
-                  onSubmitted: (query) {
-                    ref.read(searchMoviesProvider(
-                        ref.watch(searchControllerTextProvider)));
-                  },
+            ? Text(
+                "Explore",
+                style: kTextStyle(
+                  30,
+                  color: Colors.amber,
+                  fontWeight: FontWeight.bold,
                 ),
               )
             : Text(
@@ -97,10 +81,6 @@ class _AppBtmNavBarState extends ConsumerState<AppBtmNavBar> {
               currentIndex: ref.watch(btmNavbarIndexProvider),
               onTap: (index) {
                 ref.read(btmNavbarIndexProvider.notifier).state = index;
-                if (index != 1) {
-                  ref.invalidate(searchMoviesProvider);
-                  ref.invalidate(searchControllerTextProvider);
-                }
               },
               items: const [
                 BottomNavigationBarItem(

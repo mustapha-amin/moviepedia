@@ -53,10 +53,10 @@ class MoviePreview extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    movieResponse.movie!.title!.length < 15
-                        ? movieResponse.movie!.title!
-                        : '${movieResponse.movie!.title!.substring(0, 15)}...',
-                    style: kTextStyle(13, fontWeight: FontWeight.bold),
+                    movieResponse.movie!.title!,
+                    style: kTextStyle(13, fontWeight: FontWeight.bold).copyWith(
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ).padX(3),
                 ],
               )).padAll(3),
