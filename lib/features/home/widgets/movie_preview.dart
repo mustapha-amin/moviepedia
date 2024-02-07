@@ -49,6 +49,11 @@ class MoviePreview extends StatelessWidget {
                             width: context.screenHeight * .38,
                           );
                         },
+                        errorWidget: (context, err, _) {
+                          return const Center(
+                            child: Icon(Icons.error, color: Colors.red),
+                          );
+                        },
                       ),
                     ),
                   ),
